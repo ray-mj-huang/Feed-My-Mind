@@ -10,13 +10,13 @@ export default function Color({
   return (
     <section>
       <h1>{title}</h1>
-      <button onClick={() => removeColor(id)}>
+      <button type="button" onClick={() => removeColor(id)}>
         <FaTrash />
       </button>
       <div style={{ height: 50, backgroundColor: color }} />
       <StarRating
         selectedStars={rating}
-        onRate={(rating) => rateColor(id, rating)}
+        onRate={(Rating) => rateColor(id, Rating)}
       />
     </section>
   );

@@ -25,6 +25,7 @@ export default function ColorProvider({ children }) {
   const removeColor = (id) => setColors(colors.filter((color) => color.id !== id));
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <ColorContext.Provider value={{
       colors, addColor, removeColor, rateColor,
     }}

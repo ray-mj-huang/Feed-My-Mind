@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {
   collection, setDoc, doc,
 } from 'firebase/firestore';
-import colorData from './color-data.json';
-import ColorList from './ColorList.js';
+// import colorData from './color-data.json';
+import ColorList from './ColorList';
 import AddColorForm from './AddColorForm';
 import { db } from './firebase';
 

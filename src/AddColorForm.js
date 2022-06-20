@@ -23,7 +23,7 @@ export default function AddColorForm() {
         required
       />
       <input {...colorProps} type="color" required />
-      <button>ADD</button>
+      <button type="submit">ADD</button>
     </form>
   );
 }
