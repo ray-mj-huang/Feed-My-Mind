@@ -1,44 +1,111 @@
-import React from 'react';
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import './App.css';
-import {
-  collection, setDoc, doc,
-} from 'firebase/firestore';
-import { db } from './firebase';
+import { useState } from 'react';
+import Card from './Card';
+import ReadingMode from './ReadingMode';
 
-// 寫入 data 測試
-async function submitData(e) {
-  e.preventDefault();
-  const newUserRef = doc(collection(db, 'collect-test'));
-  await setDoc(newUserRef, {
-    userId: newUserRef.id,
-    userEmail: 'ray.mj.huang@gmail.com',
-    userName: 'Ray',
-    title: '來點測試！',
-    article: 'React Context 應該這樣用，bla bla bla ... 嗚嗚。',
-  });
-  // eslint-disable-next-line
-  console.log(`來點測試！, id: ${newUserRef.id}`);
+function Container({ children }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        minHeight: '100vh',
+        background: '#cccccc',
+      }}
+    >
+      {children}
+    </div>
+  );
 }
 
 function App() {
+  const [cards, setCards] = useState([]);
+
+  const [isRead, setIsRead] = useState(false);
+
+  const [readingCardId, setReadingCardId] = useState(0);
+
+  function handleStoreItem() {
+    localStorage.setItem('myData', JSON.stringify(cards));
+  }
+
+  function handleOnRead(cardId) {
+    setIsRead(true);
+    setReadingCardId(cardId);
+  }
+
+  const cardList = cards.map((c) => (
+    <Card
+      key={c.id}
+      card={c}
+      onRead={() => {
+        handleOnRead(c.id);
+      }}
+    />
+  ));
+
   return (
-    <div className="App">
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+    <Container>
+      {isRead && (
+        <ReadingMode
+          cardId={readingCardId}
+          cards={cards}
+          setCards={setCards}
+          setIsRead={setIsRead}
+        />
+      )}
+
+      <h1>Feedy Notes</h1>
+
+      <p>Welcome to Feedy Notes, hope you will enjoy it!</p>
+      <div
+        style={{ marginBottom: '30px' }}
+      />
+      <button
+        onClick={handleStoreItem}
+      >
+        儲存到 localStorage
+      </button>
+      <button
+        onClick={() => {
+          const newData = JSON.parse(localStorage.getItem('myData'));
+          setCards(newData);
+        }}
+      >
+        從 localStorage 載入我的筆記
+      </button>
+      <hr />
+
+      <button
+        onClick={() => {
+          setCards([{
+            id: cards.length + 1, isEdit: false, title: '標題', content: '內文',
+          }, ...cards]);
+        }}
+      >
+        新增筆記
+      </button>
+
       <div
         style={{
-          background: '#ccc',
-          padding: '10px 20px',
-          fontSize: '20px',
-          borderRadius: '5px',
-          margin: '200px auto',
-          width: '100px',
+          width: '100%',
+          maxWidth: '1400px',
         }}
-        onClick={submitData}
-        aria-hidden="true"
       >
-        Test button
+        <div
+          className="cardContainer"
+        >
+          {cardList}
+        </div>
       </div>
-    </div>
+
+    </Container>
   );
 }
 
