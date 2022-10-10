@@ -12,7 +12,7 @@ const normalCard = {
 };
 
 export default function Card({
-  card, onRead,
+  card, onRead, onDelete,
 }) {
   return (
     <div>
@@ -32,13 +32,9 @@ export default function Card({
           }}
         />
 
-        <button
-          onClick={() => {
-            onRead();
-          }}
-        >
-          Read
-        </button>
+        <button onClick={onRead}>Read</button>
+
+        <button onClick={onDelete}>Delete</button>
 
       </div>
     </div>

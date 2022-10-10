@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from './Card';
 import ReadingMode from './ReadingMode';
 
@@ -25,11 +25,17 @@ function Container({ children }) {
 }
 
 function App() {
+  const [nextId, setInicialId] = useState(1);
+
   const [cards, setCards] = useState([]);
 
   const [isRead, setIsRead] = useState(false);
 
   const [readingCardId, setReadingCardId] = useState(0);
+
+  useEffect(() => {
+    if (cards.length > 0) { setInicialId(cards[0].id + 1); }
+  }, [cards]);
 
   function handleStoreItem() {
     localStorage.setItem('myData', JSON.stringify(cards));
@@ -40,6 +46,10 @@ function App() {
     setReadingCardId(cardId);
   }
 
+  function handleDelete(cardId) {
+    setCards(cards.filter((c) => c.id !== cardId));
+  }
+
   const cardList = cards.map((c) => (
     <Card
       key={c.id}
@@ -47,6 +57,7 @@ function App() {
       onRead={() => {
         handleOnRead(c.id);
       }}
+      onDelete={() => handleDelete(c.id)}
     />
   ));
 
@@ -80,13 +91,17 @@ function App() {
       >
         從 localStorage 載入我的筆記
       </button>
+
       <hr />
+
+      <p>{nextId}</p>
 
       <button
         onClick={() => {
           setCards([{
-            id: cards.length + 1, isEdit: false, title: '標題', content: '內文',
+            id: nextId, isEdit: false, title: '標題', content: '內文',
           }, ...cards]);
+          setInicialId((id) => id + 1);
         }}
       >
         新增筆記
