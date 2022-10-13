@@ -1,7 +1,9 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import './App.css';
 import { useEffect, useState } from 'react';
+import { collection, setDoc, doc } from 'firebase/firestore';
+import { db } from './firebase';
+import './App.css';
 import Card from './Card';
 import ReadingMode from './ReadingMode';
 
@@ -25,6 +27,21 @@ function Container({ children }) {
 }
 
 function App() {
+  // 寫入 data 測試
+  async function submitData() {
+    // e.preventDefault();
+    const newUserRef = doc(collection(db, 'collect-test'));
+    await setDoc(newUserRef, {
+      userId: newUserRef.id,
+      userEmail: 'ray.mj.huang@gmail.com',
+      userName: 'Ray',
+      title: '來點測試！',
+      article: 'React Context 應該這樣用，bla bla bla ... 嗚嗚。',
+    });
+    // eslint-disable-next-line
+    console.log(`安安！${newUserRef.id}`);
+  }
+
   const [nextId, setInicialId] = useState(1);
 
   const [cards, setCards] = useState([]);
@@ -71,6 +88,8 @@ function App() {
           setIsRead={setIsRead}
         />
       )}
+
+      <button onClick={() => submitData()}>測試</button>
 
       <h1>Feedy Notes</h1>
 
