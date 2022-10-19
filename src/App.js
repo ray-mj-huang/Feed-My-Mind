@@ -1,9 +1,16 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import './App.css';
 import { useEffect, useState } from 'react';
+import {
+  doc, onSnapshot, updateDoc,
+} from 'firebase/firestore';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { db, auth } from './firebase';
+import './App.css';
 import Card from './Card';
 import ReadingMode from './ReadingMode';
+import SignUpCard from './SignUpCard';
+import LoginCard from './LoginCard';
 
 function Container({ children }) {
   return (
@@ -25,16 +32,57 @@ function Container({ children }) {
 }
 
 function App() {
-  const [nextId, setInicialId] = useState(1);
-
+  const [nextId, setNextId] = useState(1);
   const [cards, setCards] = useState([]);
-
   const [isRead, setIsRead] = useState(false);
-
   const [readingCardId, setReadingCardId] = useState(0);
 
+  const [userInfo, setUserInfo] = useState('');
+
   useEffect(() => {
-    if (cards.length > 0) { setInicialId(cards[0].id + 1); }
+    onAuthStateChanged(auth, (userData) => {
+      if (userData) {
+        // eslint-disable-next-line no-console
+        console.log(userData);
+        setUserInfo(userData);
+      } else {
+        // eslint-disable-next-line no-console
+        console.log('使用者還沒登入噢');
+        setUserInfo(null);
+        setCards([]);
+      }
+    });
+  }, [auth]);
+
+  function signOutFunction() {
+    signOut(auth).then(() => {
+      // eslint-disable-next-line no-console
+      console.log('已經登出囉！');
+      setUserInfo(null);
+    })
+      .catch((error) => {
+      // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    if (userInfo) {
+      const ref = doc(db, 'users', userInfo.uid);
+      onSnapshot(ref, (querySnapshot) => {
+        setCards(querySnapshot.data().user_notes);
+      });
+    }
+  }, [userInfo]);
+
+  function storeNotes() {
+    const ref = doc(db, 'users', userInfo.uid);
+    updateDoc(ref, { user_notes: cards });
+  }
+
+  useEffect(() => {
+    if (cards.length > 0) { setNextId(cards[0].id + 1); }
+    if (cards.length === 0) { setNextId(1); }
   }, [cards]);
 
   function handleStoreItem() {
@@ -72,6 +120,15 @@ function App() {
         />
       )}
 
+      {userInfo ? userInfo.email : '請登入噢～'}
+      <SignUpCard />
+      <LoginCard />
+
+      <button onClick={signOutFunction}>登出</button>
+
+      <button onClick={storeNotes}>把筆記寫入 FireStore</button>
+      <hr />
+
       <h1>Feedy Notes</h1>
 
       <p>Welcome to Feedy Notes, hope you will enjoy it!</p>
@@ -101,7 +158,7 @@ function App() {
           setCards([{
             id: nextId, isEdit: false, title: '標題', content: '內文',
           }, ...cards]);
-          setInicialId((id) => id + 1);
+          setNextId((id) => id + 1);
         }}
       >
         新增筆記
