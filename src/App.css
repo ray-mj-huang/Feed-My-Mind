@@ -2,9 +2,40 @@
   box-sizing: border-box;
 }
 
-button {
-  margin-top: 10px;
+body {
+  background: #1e1e1e;
 }
+
+button {
+  display: inline-block;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  margin: 0;
+  font-size: 18px;
+  text-decoration: none; 
+  background: #000000;
+  color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  /* transition: background 250ms ease-in-out, 
+              transform 150ms ease; */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button:hover {
+  background:#444444;
+}
+
+/* button:focus {
+  background: #888888;
+} */
+
+/* button:active {
+  transform: scale(0.99);
+} */
+
 
 .cardContainer {
   display: flex;
