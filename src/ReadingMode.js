@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
@@ -12,35 +13,47 @@ export default function ReadingMode({
 
   const [editingContent, setEditingContent] = useState(card.content);
 
-  const hasPrev = readingId > 1;
-  const hasNext = readingId < cards.length;
+  const currentIndex = cards.map((c) => c.id).indexOf(readingId);
+  // console.log(`currentIndex: ${currentIndex}`);
+
+  let previousId = '';
+  let nextId = '';
+
+  if (currentIndex > 0) {
+    previousId = cards[currentIndex - 1].id;
+    // console.log(`previousId: ${previousId}`);
+  }
+
+  if (currentIndex < cards.length - 1) {
+    nextId = cards[currentIndex + 1].id;
+  // console.log(`nextId: ${nextId}`);
+  }
+
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex < cards.length - 1;
 
   function handlePrevClick() {
-    if (hasPrev) {
-      setReadingId((r) => r - 1);
-      setCards(
-        cards.map((c) => {
-          if (c.id === readingId) {
-            return { ...c, isEdit: false };
-          }
-          return c;
-        }),
-      );
-    }
+    setReadingId(previousId);
+    setCards(
+      cards.map((c) => {
+        if (c.id === readingId) {
+          return { ...c, isEdit: false };
+        }
+        return c;
+      }),
+    );
   }
 
   function handleNextClick() {
-    if (hasNext) {
-      setReadingId((r) => r + 1);
-      setCards(
-        cards.map((c) => {
-          if (c.id === readingId) {
-            return { ...c, isEdit: false };
-          }
-          return c;
-        }),
-      );
-    }
+    setReadingId(nextId);
+    setCards(
+      cards.map((c) => {
+        if (c.id === readingId) {
+          return { ...c, isEdit: false };
+        }
+        return c;
+      }),
+    );
   }
 
   const cardStyle = {
@@ -129,11 +142,11 @@ export default function ReadingMode({
       </div>
 
       <button onClick={handlePrevClick} disabled={!hasPrev}>
-        下一張
+        往左
       </button>
 
       <button onClick={handleNextClick} disabled={!hasNext}>
-        上一張
+        往右
       </button>
     </div>
   );
