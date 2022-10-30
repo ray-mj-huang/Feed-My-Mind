@@ -24,6 +24,10 @@ button {
   -moz-appearance: none;
 }
 
+button:disabled {
+  opacity: 0;
+}
+
 button:hover {
   background:#444444;
 }
