@@ -64,11 +64,10 @@ export default function Navbar({ changePage }) {
         ▲ Feed My Mind
       </HomeButton>
 
-      <NotesButton
-        onClick={() => changePage('Notes')}
-      >
+      <NotesButton onClick={() => changePage('Notes')}>
         Notes
       </NotesButton>
+
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <ShortCutToolbox>
           <ShortCutButton style={{ color: '#1DD79F' }}>▶</ShortCutButton>
@@ -78,7 +77,7 @@ export default function Navbar({ changePage }) {
         <DashboardButton
           onClick={() => changePage('Dashboard')}
         >
-          Hi, Ray !
+          Dashboard
         </DashboardButton>
       </div>
     </Header>
