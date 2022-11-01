@@ -38,6 +38,8 @@ export default function Notes() {
   const [isRead, setIsRead] = useState(false);
   const [readingCardId, setReadingCardId] = useState(0);
 
+  const [viewMode, setViewMode] = useState('ListView');
+
   const [userInfo, setUserInfo] = useState('');
 
   useEffect(() => {
@@ -103,6 +105,7 @@ export default function Notes() {
         handleOnRead(c.id);
       }}
       onDelete={() => handleDelete(c.id)}
+      viewMode={viewMode}
     />
   ));
 
@@ -140,10 +143,21 @@ export default function Notes() {
         style={{
           width: '100%',
           maxWidth: '1400px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <div
-          className="cardContainer"
+          style={{
+            display: 'flex',
+          }}
+        >
+          <button onClick={() => setViewMode('ListView')}>List View</button>
+          <button onClick={() => setViewMode('GridView')}>Grid View</button>
+        </div>
+        <div
+          className={viewMode === 'GridView' && 'cardContainer'}
         >
           {cardList}
         </div>
