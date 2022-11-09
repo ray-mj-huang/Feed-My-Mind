@@ -6,22 +6,26 @@ import { useState } from 'react';
 export default function ReadingMode({
   cardId, cards, setCards, setIsRead,
 }) {
+  // 以 card ID 決定要顯示哪一張卡片
   const [readingId, setReadingId] = useState(cardId);
 
+  // 以 card ID 過濾出該張卡片
   const readingList = cards.filter((c) => c.id === readingId);
   const card = readingList[0];
 
+  // 編輯卡片的設定
   const [editingContent, setEditingContent] = useState(card.content);
+  const [editingTitle, setEditingTitle] = useState(card.title);
 
+  // 找出當前卡片在陣列中的 index 值
   const currentIndex = cards.map((c) => c.id).indexOf(readingId);
-  // console.log(`currentIndex: ${currentIndex}`);
 
+  // 以下是前後移動到其他卡片的功能
   let previousId = '';
   let nextId = '';
 
   if (currentIndex > 0) {
     previousId = cards[currentIndex - 1].id;
-    // console.log(`previousId: ${previousId}`);
   }
 
   if (currentIndex < cards.length - 1) {
@@ -99,6 +103,7 @@ export default function ReadingMode({
 
       <button
         onClick={() => {
+          // 開啟編輯
           if (!card.isEdit) {
             setCards(
               cards.map((c) => {
@@ -109,12 +114,26 @@ export default function ReadingMode({
               }),
             );
           }
-
+          // 儲存
           if (card.isEdit) {
+            const timeData = new Date();
+            const year = timeData.getFullYear();
+            const month = timeData.getMonth();
+            const date = timeData.getDate();
+            const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
+            const hour = timeData.getHours();
+            const minutes = timeData.getMinutes();
+            const editedTimeValue = `edited: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
             setCards(
               cards.map((c) => {
                 if (c.id === readingId) {
-                  return { ...c, isEdit: !card.isEdit, content: editingContent };
+                  return {
+                    ...c,
+                    isEdit: !card.isEdit,
+                    title: editingTitle,
+                    content: editingContent,
+                    editedTime: editedTimeValue,
+                  };
                 }
                 return c;
               }),
@@ -125,12 +144,20 @@ export default function ReadingMode({
         { card.isEdit ? '儲存' : '點此編輯' }
       </button>
 
-      <h4 style={{ color: 'white' }}>Read 模式</h4>
+      <h4 style={{ color: 'white' }}>{card.isEdit ? 'Edit 模式' : 'Read 模式'}</h4>
 
       <div
         style={cardStyle}
       >
-        <h1>{`# ${card.id}`}</h1>
+        <h2>{`# ${card.id}`}</h2>
+        <h1
+          contentEditable={card.isEdit}
+          onInput={(e) => {
+            setEditingTitle(e.target.innerHTML);
+          }}
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: card.title }}
+        />
         <div
           contentEditable={card.isEdit}
           onInput={(e) => {

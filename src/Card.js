@@ -36,6 +36,16 @@ export default function Card({
           <div>
             {`ID: #${card.id}`}
           </div>
+          <div>
+            {card.createdTime}
+          </div>
+          <div>
+            {card.editedTime}
+          </div>
+          <h2
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: card.title }}
+          />
           <div
           // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: card.content }}
@@ -55,6 +65,16 @@ export default function Card({
           <div>
             {`ID: #${card.id}`}
           </div>
+          <div>
+            {card.createdTime}
+          </div>
+          <div>
+            {card.editedTime}
+          </div>
+          <div
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: card.title }}
+          />
           <button onClick={onRead}>Read</button>
           <button onClick={onDelete}>Delete</button>
         </ListViewCard>
