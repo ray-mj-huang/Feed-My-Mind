@@ -16,6 +16,7 @@ export default function ReadingMode({
   // 編輯卡片的設定
   const [editingContent, setEditingContent] = useState(card.content);
   const [editingTitle, setEditingTitle] = useState(card.title);
+  const [editingColor, setEditingColor] = useState(card.color);
 
   // 找出當前卡片在陣列中的 index 值
   const currentIndex = cards.map((c) => c.id).indexOf(readingId);
@@ -133,6 +134,7 @@ export default function ReadingMode({
                     title: editingTitle,
                     content: editingContent,
                     editedTime: editedTimeValue,
+                    color: editingColor,
                   };
                 }
                 return c;
@@ -149,6 +151,14 @@ export default function ReadingMode({
       <div
         style={cardStyle}
       >
+        <div style={{ background: card.color, width: 15, height: 15 }} />
+        {card.isEdit ? (
+          <input
+            onChange={(e) => setEditingColor(e.target.value)}
+            type="color"
+          />
+        )
+          : null}
         <h2>{`# ${card.id}`}</h2>
         <h1
           contentEditable={card.isEdit}

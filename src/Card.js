@@ -33,6 +33,7 @@ export default function Card({
     <div>
       { viewMode === 'GridView' && (
         <GridViewCard>
+          <div style={{ background: card.color, width: 15, height: 15 }} />
           <div>
             {`ID: #${card.id}`}
           </div>
@@ -62,6 +63,7 @@ export default function Card({
       )}
       { viewMode === 'ListView' && (
         <ListViewCard>
+          <div style={{ background: card.color, width: 15, height: 15 }} />
           <div>
             {`ID: #${card.id}`}
           </div>
