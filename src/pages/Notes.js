@@ -38,6 +38,8 @@ export default function Notes() {
   const [isRead, setIsRead] = useState(false);
   const [readingCardId, setReadingCardId] = useState(0);
 
+  const [viewMode, setViewMode] = useState('ListView');
+
   const [userInfo, setUserInfo] = useState('');
 
   useEffect(() => {
@@ -103,8 +105,13 @@ export default function Notes() {
         handleOnRead(c.id);
       }}
       onDelete={() => handleDelete(c.id)}
+      viewMode={viewMode}
     />
   ));
+
+  const active = {
+    color: 'red',
+  };
 
   return (
     <Container>
@@ -125,10 +132,19 @@ export default function Notes() {
 
       <button
         onClick={() => {
+          const timeData = new Date();
+          const year = timeData.getFullYear();
+          const month = timeData.getMonth();
+          const date = timeData.getDate();
+          const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
+          const hour = timeData.getHours();
+          const minutes = timeData.getMinutes();
+          const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
           setCards([{
-            id: nextId, isEdit: false, title: '標題', content: '內文',
+            id: nextId, isEdit: true, title: '標題', content: '內文', createdTime: createdTimeValue, editedTime: null, color: '#6BD677',
           }, ...cards]);
           setNextId((id) => id + 1);
+          handleOnRead(nextId);
         }}
       >
         新增筆記
@@ -140,10 +156,17 @@ export default function Notes() {
         style={{
           width: '100%',
           maxWidth: '1400px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
+        <div style={{ display: 'flex' }}>
+          <button onClick={() => setViewMode('ListView')} style={viewMode === 'ListView' ? active : null}>List View</button>
+          <button onClick={() => setViewMode('GridView')} style={viewMode === 'GridView' ? active : null}>Grid View</button>
+        </div>
         <div
-          className="cardContainer"
+          className={viewMode === 'GridView' && 'cardContainer'}
         >
           {cardList}
         </div>
