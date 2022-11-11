@@ -141,9 +141,10 @@ export default function Notes() {
           const minutes = timeData.getMinutes();
           const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
           setCards([{
-            id: nextId, isEdit: false, title: '標題', content: '內文', createdTime: createdTimeValue, editedTime: null, color: '#6BD677',
+            id: nextId, isEdit: true, title: '標題', content: '內文', createdTime: createdTimeValue, editedTime: null, color: '#6BD677',
           }, ...cards]);
           setNextId((id) => id + 1);
+          handleOnRead(nextId);
         }}
       >
         新增筆記
