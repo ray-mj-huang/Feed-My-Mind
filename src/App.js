@@ -14,15 +14,15 @@ import Notes from './pages/Notes';
 import Dashboard from './pages/Dashboard';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('Notes');
+  const [currentPage, setCurrentPage] = useState('Home');
 
   return (
     <>
       <Navbar
         changePage={setCurrentPage}
       />
-      {currentPage === 'Notes' && <Notes />}
       {currentPage === 'Home' && <Home />}
+      {currentPage === 'Notes' && <Notes />}
       {currentPage === 'Dashboard' && <Dashboard />}
     </>
     // <BrowserRouter>

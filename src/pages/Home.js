@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 
-import SignUpCard from '../SignUpCard';
+// import SignUpCard from '../SignUpCard';
 import LoginCard from '../LoginCard';
 
 function Container({ children }) {
@@ -26,10 +26,15 @@ function Container({ children }) {
 export default function Home() {
   return (
     <Container>
-      <h1>Feed My Mind</h1>
-      <h2>A Powerful Notes-Taking Tool</h2>
-      <p>Welcome to Feedy Notes, hope you will enjoy it!</p>
-      <SignUpCard />
+      <div style={{
+        width: '400px', border: '1px solid white', borderRadius: '5px', padding: '20px', color: 'white', textAlign: 'center',
+      }}
+      >
+        <h1>Feed My Mind</h1>
+        <h2>A Cool Note-Taking Tool</h2>
+        <p>Welcome to Feedy Notes, hope you will enjoy it!</p>
+        <div>feature</div>
+      </div>
       <LoginCard />
     </Container>
   );
