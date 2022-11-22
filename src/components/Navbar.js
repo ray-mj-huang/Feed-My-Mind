@@ -54,7 +54,7 @@ const ShortCutToolbox = styled.div`
   margin-right: 150px;
 `;
 
-export default function Navbar({ changePage }) {
+export default function Navbar({ changePage, signOut, userInfo }) {
   return (
     <Header>
       <HomeButton
@@ -74,6 +74,7 @@ export default function Navbar({ changePage }) {
           <ShortCutButton style={{ color: '#F4B510' }}>+</ShortCutButton>
           <ShortCutButton>☾</ShortCutButton>
         </ShortCutToolbox>
+        {userInfo ? <button onClick={signOut}>登出</button> : null}
         <DashboardButton
           onClick={() => changePage('Dashboard')}
         >

@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
 
 import '../App.css';
 
@@ -32,7 +31,7 @@ function Container({ children }) {
   );
 }
 
-export default function Notes() {
+export default function Notes({ userInfo }) {
   const [nextId, setNextId] = useState(1);
   const [cards, setCards] = useState([]);
   const [isRead, setIsRead] = useState(false);
@@ -40,34 +39,22 @@ export default function Notes() {
 
   const [viewMode, setViewMode] = useState('ListView');
 
-  const [userInfo, setUserInfo] = useState('');
+  // const [userInfo, setUserInfo] = useState('');
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (userData) => {
-      if (userData) {
-        // eslint-disable-next-line no-console
-        console.log(userData);
-        setUserInfo(userData);
-      } else {
-        // eslint-disable-next-line no-console
-        console.log('使用者還沒登入噢');
-        setUserInfo(null);
-        setCards([]);
-      }
-    });
-  }, [auth]);
-
-  function signOutFunction() {
-    signOut(auth).then(() => {
-      // eslint-disable-next-line no-console
-      console.log('已經登出囉！');
-      setUserInfo(null);
-    })
-      .catch((error) => {
-      // eslint-disable-next-line no-console
-        console.log(error);
-      });
-  }
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (userData) => {
+  //     if (userData) {
+  //       // eslint-disable-next-line no-console
+  //       console.log(userData);
+  //       setUserInfo(userData);
+  //     } else {
+  //       // eslint-disable-next-line no-console
+  //       console.log('使用者還沒登入噢');
+  //       setUserInfo(null);
+  //       setCards([]);
+  //     }
+  //   });
+  // }, [auth]);
 
   useEffect(() => {
     if (userInfo) {
@@ -126,7 +113,7 @@ export default function Notes() {
 
       {userInfo ? userInfo.email : '請登入噢～'}
 
-      <button onClick={signOutFunction}>登出</button>
+      {/* <button onClick={signOutFunction}>登出</button> */}
 
       <p>{nextId}</p>
 
@@ -168,7 +155,7 @@ export default function Notes() {
         <div
           className={viewMode === 'GridView' && 'cardContainer'}
         >
-          {cardList}
+          {userInfo ? cardList : '這裡沒有汁料'}
         </div>
       </div>
 
