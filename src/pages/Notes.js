@@ -32,11 +32,11 @@ function Container({ children }) {
 }
 
 export default function Notes({ userInfo }) {
-  const [nextId, setNextId] = useState(1);
+  const [newId, setNewId] = useState(1);
   const [cards, setCards] = useState([]);
   const [isRead, setIsRead] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [readingCardId, setReadingCardId] = useState(0);
-
   const [viewMode, setViewMode] = useState('ListView');
 
   // const [userInfo, setUserInfo] = useState('');
@@ -71,8 +71,8 @@ export default function Notes({ userInfo }) {
   }
 
   useEffect(() => {
-    if (cards.length > 0) { setNextId(cards[0].id + 1); }
-    if (cards.length === 0) { setNextId(1); }
+    if (cards.length > 0) { setNewId(cards[0].id + 1); }
+    if (cards.length === 0) { setNewId(1); }
   }, [cards]);
 
   function handleOnRead(cardId) {
@@ -108,30 +108,23 @@ export default function Notes({ userInfo }) {
           cards={cards}
           setCards={setCards}
           setIsRead={setIsRead}
+          isCreating={isCreating}
+          setIsCreating={setIsCreating}
         />
       )}
 
       {userInfo ? userInfo.email : '請登入噢～'}
 
-      {/* <button onClick={signOutFunction}>登出</button> */}
-
-      <p>{nextId}</p>
+      <p>{newId}</p>
 
       <button
         onClick={() => {
-          const timeData = new Date();
-          const year = timeData.getFullYear();
-          const month = timeData.getMonth();
-          const date = timeData.getDate();
-          const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
-          const hour = timeData.getHours();
-          const minutes = timeData.getMinutes();
-          const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
           setCards([{
-            id: nextId, isEdit: true, title: '標題', content: '內文', createdTime: createdTimeValue, editedTime: null, color: '#6BD677',
+            id: newId, isEdit: true, title: '標題', content: '內文', createdTime: null, editedTime: null, color: '#6BD677',
           }, ...cards]);
-          setNextId((id) => id + 1);
-          handleOnRead(nextId);
+          setNewId((id) => id + 1);
+          handleOnRead(newId);
+          setIsCreating(true);
         }}
       >
         新增筆記
