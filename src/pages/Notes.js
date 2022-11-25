@@ -38,6 +38,7 @@ export default function Notes({ userInfo }) {
   const [isCreating, setIsCreating] = useState(false);
   const [readingCardId, setReadingCardId] = useState(0);
   const [viewMode, setViewMode] = useState('ListView');
+  const [isChange, setIsChange] = useState(0);
 
   // const [userInfo, setUserInfo] = useState('');
 
@@ -75,6 +76,10 @@ export default function Notes({ userInfo }) {
     if (cards.length === 0) { setNewId(1); }
   }, [cards]);
 
+  useEffect(() => {
+    if (isChange > 0) { storeNotes(); }
+  }, [isChange]);
+
   function handleOnRead(cardId) {
     setIsRead(true);
     setReadingCardId(cardId);
@@ -82,6 +87,7 @@ export default function Notes({ userInfo }) {
 
   function handleDelete(cardId) {
     setCards(cards.filter((c) => c.id !== cardId));
+    setIsChange((n) => n + 1);
   }
 
   const cardList = cards.map((c) => (
@@ -110,9 +116,10 @@ export default function Notes({ userInfo }) {
           setIsRead={setIsRead}
           isCreating={isCreating}
           setIsCreating={setIsCreating}
+          setIsChange={setIsChange}
         />
       )}
-
+      <div>{isChange}</div>
       {userInfo ? userInfo.email : '請登入噢～'}
 
       <p>{newId}</p>
@@ -129,8 +136,6 @@ export default function Notes({ userInfo }) {
       >
         新增筆記
       </button>
-
-      <button onClick={storeNotes}>把筆記寫入 FireStore</button>
 
       <div
         style={{
@@ -151,6 +156,8 @@ export default function Notes({ userInfo }) {
           {userInfo ? cardList : '這裡沒有汁料'}
         </div>
       </div>
+
+      {/* <button onClick={storeNotes}>儲存</button> */}
 
     </Container>
   );

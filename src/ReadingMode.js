@@ -4,7 +4,7 @@
 import { useState } from 'react';
 
 export default function ReadingMode({
-  cardId, cards, setCards, setIsRead, isCreating, setIsCreating,
+  cardId, cards, setCards, setIsRead, isCreating, setIsCreating, setIsChange,
 }) {
   // 以 card ID 決定要顯示哪一張卡片
   const [readingId, setReadingId] = useState(cardId);
@@ -86,6 +86,16 @@ export default function ReadingMode({
     <div
       style={containerStyle}
     >
+      <button
+        onClick={() => {
+          setIsRead(false);
+          setCards(cards.filter((c) => c.id !== cardId));
+          setIsChange((n) => n + 1);
+        }}
+      >
+        delete
+      </button>
+
       {isCreating ? (
         <button
           onClick={() => {
@@ -141,6 +151,7 @@ export default function ReadingMode({
               }),
             );
             setIsCreating(false);
+            setIsChange((n) => n + 1);
           }}
         >
           建立
@@ -148,7 +159,7 @@ export default function ReadingMode({
       ) : (
         <button
           onClick={() => {
-          // 開啟編輯
+            // 開啟編輯
             if (!card.isEdit) {
               setCards(
                 cards.map((c) => {
@@ -184,6 +195,7 @@ export default function ReadingMode({
                   return c;
                 }),
               );
+              setIsChange((n) => n + 1);
             }
           }}
         >
@@ -223,13 +235,17 @@ export default function ReadingMode({
         />
       </div>
 
-      <button onClick={handlePrevClick} disabled={!hasPrev}>
-        往左
-      </button>
+      {isCreating || (
+        <>
+          <button onClick={handlePrevClick} disabled={!hasPrev}>
+            往左
+          </button>
+          <button onClick={handleNextClick} disabled={!hasNext}>
+            往右
+          </button>
+        </>
+      )}
 
-      <button onClick={handleNextClick} disabled={!hasNext}>
-        往右
-      </button>
     </div>
   );
 }
