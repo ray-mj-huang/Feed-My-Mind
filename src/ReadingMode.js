@@ -4,7 +4,7 @@
 import { useState } from 'react';
 
 export default function ReadingMode({
-  cardId, cards, setCards, setIsRead,
+  cardId, cards, setCards, setIsRead, isCreating, setIsCreating, setIsChange,
 }) {
   // 以 card ID 決定要顯示哪一張卡片
   const [readingId, setReadingId] = useState(cardId);
@@ -89,34 +89,44 @@ export default function ReadingMode({
       <button
         onClick={() => {
           setIsRead(false);
-          setCards(
-            cards.map((c) => {
-              if (c.id === readingId) {
-                return { ...c, isEdit: false };
-              }
-              return c;
-            }),
-          );
+          setCards(cards.filter((c) => c.id !== cardId));
+          setIsChange((n) => n + 1);
         }}
       >
-        跳出
+        delete
       </button>
 
-      <button
-        onClick={() => {
-          // 開啟編輯
-          if (!card.isEdit) {
+      {isCreating ? (
+        <button
+          onClick={() => {
+            setIsRead(false);
+            setIsCreating(false);
+            setCards(cards.filter((c) => c.id !== cardId));
+          }}
+        >
+          放棄建立
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            setIsRead(false);
             setCards(
               cards.map((c) => {
                 if (c.id === readingId) {
-                  return { ...c, isEdit: !card.isEdit };
+                  return { ...c, isEdit: false };
                 }
                 return c;
               }),
             );
-          }
-          // 儲存
-          if (card.isEdit) {
+          }}
+        >
+          跳出
+        </button>
+      )}
+
+      {isCreating ? (
+        <button
+          onClick={() => {
             const timeData = new Date();
             const year = timeData.getFullYear();
             const month = timeData.getMonth();
@@ -124,7 +134,7 @@ export default function ReadingMode({
             const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
             const hour = timeData.getHours();
             const minutes = timeData.getMinutes();
-            const editedTimeValue = `edited: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
+            const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
             setCards(
               cards.map((c) => {
                 if (c.id === readingId) {
@@ -133,18 +143,65 @@ export default function ReadingMode({
                     isEdit: !card.isEdit,
                     title: editingTitle,
                     content: editingContent,
-                    editedTime: editedTimeValue,
+                    createdTime: createdTimeValue,
                     color: editingColor,
                   };
                 }
                 return c;
               }),
             );
-          }
-        }}
-      >
-        { card.isEdit ? '儲存' : '點此編輯' }
-      </button>
+            setIsCreating(false);
+            setIsChange((n) => n + 1);
+          }}
+        >
+          建立
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            // 開啟編輯
+            if (!card.isEdit) {
+              setCards(
+                cards.map((c) => {
+                  if (c.id === readingId) {
+                    return { ...c, isEdit: !card.isEdit };
+                  }
+                  return c;
+                }),
+              );
+            }
+            // 儲存
+            if (card.isEdit) {
+              const timeData = new Date();
+              const year = timeData.getFullYear();
+              const month = timeData.getMonth();
+              const date = timeData.getDate();
+              const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
+              const hour = timeData.getHours();
+              const minutes = timeData.getMinutes();
+              const editedTimeValue = `edited: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
+              setCards(
+                cards.map((c) => {
+                  if (c.id === readingId) {
+                    return {
+                      ...c,
+                      isEdit: !card.isEdit,
+                      title: editingTitle,
+                      content: editingContent,
+                      editedTime: editedTimeValue,
+                      color: editingColor,
+                    };
+                  }
+                  return c;
+                }),
+              );
+              setIsChange((n) => n + 1);
+            }
+          }}
+        >
+          { card.isEdit ? '儲存' : '點此編輯' }
+        </button>
+      ) }
 
       <h4 style={{ color: 'white' }}>{card.isEdit ? 'Edit 模式' : 'Read 模式'}</h4>
 
@@ -178,13 +235,17 @@ export default function ReadingMode({
         />
       </div>
 
-      <button onClick={handlePrevClick} disabled={!hasPrev}>
-        往左
-      </button>
+      {isCreating || (
+        <>
+          <button onClick={handlePrevClick} disabled={!hasPrev}>
+            往左
+          </button>
+          <button onClick={handleNextClick} disabled={!hasNext}>
+            往右
+          </button>
+        </>
+      )}
 
-      <button onClick={handleNextClick} disabled={!hasNext}>
-        往右
-      </button>
     </div>
   );
 }

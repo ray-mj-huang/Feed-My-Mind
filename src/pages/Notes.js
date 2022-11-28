@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
 
 import '../App.css';
 
@@ -32,42 +31,31 @@ function Container({ children }) {
   );
 }
 
-export default function Notes() {
-  const [nextId, setNextId] = useState(1);
+export default function Notes({ userInfo }) {
+  const [newId, setNewId] = useState(1);
   const [cards, setCards] = useState([]);
   const [isRead, setIsRead] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [readingCardId, setReadingCardId] = useState(0);
-
   const [viewMode, setViewMode] = useState('ListView');
+  const [isChange, setIsChange] = useState(0);
 
-  const [userInfo, setUserInfo] = useState('');
+  // const [userInfo, setUserInfo] = useState('');
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (userData) => {
-      if (userData) {
-        // eslint-disable-next-line no-console
-        console.log(userData);
-        setUserInfo(userData);
-      } else {
-        // eslint-disable-next-line no-console
-        console.log('使用者還沒登入噢');
-        setUserInfo(null);
-        setCards([]);
-      }
-    });
-  }, [auth]);
-
-  function signOutFunction() {
-    signOut(auth).then(() => {
-      // eslint-disable-next-line no-console
-      console.log('已經登出囉！');
-      setUserInfo(null);
-    })
-      .catch((error) => {
-      // eslint-disable-next-line no-console
-        console.log(error);
-      });
-  }
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (userData) => {
+  //     if (userData) {
+  //       // eslint-disable-next-line no-console
+  //       console.log(userData);
+  //       setUserInfo(userData);
+  //     } else {
+  //       // eslint-disable-next-line no-console
+  //       console.log('使用者還沒登入噢');
+  //       setUserInfo(null);
+  //       setCards([]);
+  //     }
+  //   });
+  // }, [auth]);
 
   useEffect(() => {
     if (userInfo) {
@@ -84,9 +72,13 @@ export default function Notes() {
   }
 
   useEffect(() => {
-    if (cards.length > 0) { setNextId(cards[0].id + 1); }
-    if (cards.length === 0) { setNextId(1); }
+    if (cards.length > 0) { setNewId(cards[0].id + 1); }
+    if (cards.length === 0) { setNewId(1); }
   }, [cards]);
+
+  useEffect(() => {
+    if (isChange > 0) { storeNotes(); }
+  }, [isChange]);
 
   function handleOnRead(cardId) {
     setIsRead(true);
@@ -95,6 +87,7 @@ export default function Notes() {
 
   function handleDelete(cardId) {
     setCards(cards.filter((c) => c.id !== cardId));
+    setIsChange((n) => n + 1);
   }
 
   const cardList = cards.map((c) => (
@@ -121,36 +114,28 @@ export default function Notes() {
           cards={cards}
           setCards={setCards}
           setIsRead={setIsRead}
+          isCreating={isCreating}
+          setIsCreating={setIsCreating}
+          setIsChange={setIsChange}
         />
       )}
-
+      <div>{isChange}</div>
       {userInfo ? userInfo.email : '請登入噢～'}
 
-      <button onClick={signOutFunction}>登出</button>
-
-      <p>{nextId}</p>
+      <p>{newId}</p>
 
       <button
         onClick={() => {
-          const timeData = new Date();
-          const year = timeData.getFullYear();
-          const month = timeData.getMonth();
-          const date = timeData.getDate();
-          const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
-          const hour = timeData.getHours();
-          const minutes = timeData.getMinutes();
-          const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
           setCards([{
-            id: nextId, isEdit: true, title: '標題', content: '內文', createdTime: createdTimeValue, editedTime: null, color: '#6BD677',
+            id: newId, isEdit: true, title: '標題', content: '內文', createdTime: null, editedTime: null, color: '#6BD677',
           }, ...cards]);
-          setNextId((id) => id + 1);
-          handleOnRead(nextId);
+          setNewId((id) => id + 1);
+          handleOnRead(newId);
+          setIsCreating(true);
         }}
       >
         新增筆記
       </button>
-
-      <button onClick={storeNotes}>把筆記寫入 FireStore</button>
 
       <div
         style={{
@@ -168,9 +153,11 @@ export default function Notes() {
         <div
           className={viewMode === 'GridView' && 'cardContainer'}
         >
-          {cardList}
+          {userInfo ? cardList : '這裡沒有汁料'}
         </div>
       </div>
+
+      {/* <button onClick={storeNotes}>儲存</button> */}
 
     </Container>
   );
