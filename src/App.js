@@ -13,7 +13,7 @@ import { auth } from './firebase';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Notes from './pages/Notes';
-import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('Home');
@@ -56,7 +56,7 @@ function App() {
       />
       {currentPage === 'Home' && <Home color={red} setColor={setRed} userInfo={userInfo} />}
       {currentPage === 'Notes' && <Notes userInfo={userInfo} />}
-      {currentPage === 'Dashboard' && <Dashboard />}
+      {/* {currentPage === 'Dashboard' && <Dashboard />} */}
     </>
     // <BrowserRouter>
     //   <Routes>

@@ -1,6 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
+import { CgAdidas } from 'react-icons/cg';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
@@ -119,6 +120,11 @@ export default function Notes({ userInfo }) {
           setIsChange={setIsChange}
         />
       )}
+
+      <div style={{ color: 'white' }}>
+        <CgAdidas size={35} color="white" />
+      </div>
+
       <div>{isChange}</div>
       {userInfo ? userInfo.email : '請登入噢～'}
 

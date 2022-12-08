@@ -33,12 +33,12 @@ const HomeButton = styled.button`
   &:hover {background: none; color: #444444;}
 `;
 
-const DashboardButton = styled.button`
-  font-weight: 700;
-  color: black;
-  background: none;
-  &:hover {background: none; color: #444444;}
-`;
+// const DashboardButton = styled.button`
+//   font-weight: 700;
+//   color: black;
+//   background: none;
+//   &:hover {background: none; color: #444444;}
+// `;
 
 const ShortCutButton = styled.button`
   height: 37px;
@@ -75,11 +75,11 @@ export default function Navbar({ changePage, signOut, userInfo }) {
           <ShortCutButton>☾</ShortCutButton>
         </ShortCutToolbox>
         {userInfo ? <button onClick={signOut}>登出</button> : null}
-        <DashboardButton
+        {/* <DashboardButton
           onClick={() => changePage('Dashboard')}
         >
           Dashboard
-        </DashboardButton>
+        </DashboardButton> */}
       </div>
     </Header>
   );

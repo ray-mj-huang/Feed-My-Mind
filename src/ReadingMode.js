@@ -133,7 +133,7 @@ export default function ReadingMode({
             const date = timeData.getDate();
             const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
             const hour = timeData.getHours();
-            const minutes = timeData.getMinutes();
+            const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
             const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
             setCards(
               cards.map((c) => {
@@ -178,7 +178,7 @@ export default function ReadingMode({
               const date = timeData.getDate();
               const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
               const hour = timeData.getHours();
-              const minutes = timeData.getMinutes();
+              const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
               const editedTimeValue = `edited: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
               setCards(
                 cards.map((c) => {
