@@ -1,7 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
-import { CgAdidas } from 'react-icons/cg';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
@@ -16,15 +15,12 @@ function Container({ children }) {
   return (
     <div
       style={{
-        paddingTop: '100px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
         width: '100%',
         height: '100%',
         minHeight: '100vh',
-        background: 'linear-gradient(182.81deg, #757575 7.81%, #1B1B1B 92.91%)',
       }}
     >
       {children}
@@ -32,31 +28,13 @@ function Container({ children }) {
   );
 }
 
-export default function Notes({ userInfo }) {
+export default function Notes({ userInfo, viewMode }) {
   const [newId, setNewId] = useState(1);
   const [cards, setCards] = useState([]);
   const [isRead, setIsRead] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [readingCardId, setReadingCardId] = useState(0);
-  const [viewMode, setViewMode] = useState('ListView');
   const [isChange, setIsChange] = useState(0);
-
-  // const [userInfo, setUserInfo] = useState('');
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (userData) => {
-  //     if (userData) {
-  //       // eslint-disable-next-line no-console
-  //       console.log(userData);
-  //       setUserInfo(userData);
-  //     } else {
-  //       // eslint-disable-next-line no-console
-  //       console.log('使用者還沒登入噢');
-  //       setUserInfo(null);
-  //       setCards([]);
-  //     }
-  //   });
-  // }, [auth]);
 
   useEffect(() => {
     if (userInfo) {
@@ -103,10 +81,6 @@ export default function Notes({ userInfo }) {
     />
   ));
 
-  const active = {
-    color: 'red',
-  };
-
   return (
     <Container>
       {isRead && (
@@ -120,10 +94,6 @@ export default function Notes({ userInfo }) {
           setIsChange={setIsChange}
         />
       )}
-
-      <div style={{ color: 'white' }}>
-        <CgAdidas size={35} color="white" />
-      </div>
 
       <div>{isChange}</div>
       {userInfo ? userInfo.email : '請登入噢～'}
@@ -152,10 +122,6 @@ export default function Notes({ userInfo }) {
           alignItems: 'center',
         }}
       >
-        <div style={{ display: 'flex' }}>
-          <button onClick={() => setViewMode('ListView')} style={viewMode === 'ListView' ? active : null}>List View</button>
-          <button onClick={() => setViewMode('GridView')} style={viewMode === 'GridView' ? active : null}>Grid View</button>
-        </div>
         <div
           className={viewMode === 'GridView' && 'cardContainer'}
         >

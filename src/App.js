@@ -1,24 +1,41 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import { useState, useEffect } from 'react';
-
 // import { onAuthStateChanged } from 'firebase/auth';
 // import { auth } from './firebase';
 import './App.css';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebase';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
 import Notes from './pages/Notes';
-// import Dashboard from './pages/Dashboard';
+import SignInCard from './components/SignInCard';
+
+const boxStyle = {
+  width: '500px', border: '1px solid white', borderRadius: '5px', padding: '20px', color: 'white', textAlign: 'center', margin: '10px',
+};
+
+function Container({ children }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        minHeight: '100vh',
+        background: '#1e1e1e',
+        paddingTop: '50px',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('Home');
-  const [red, setRed] = useState('red');
   const [userInfo, setUserInfo] = useState('');
+  const [viewMode, setViewMode] = useState('ListView');
 
   useEffect(() => {
     onAuthStateChanged(auth, (userData) => {
@@ -48,23 +65,23 @@ function App() {
   }
 
   return (
-    <>
+    <Container>
       <Navbar
-        changePage={setCurrentPage}
         signOut={() => signOutFunction()}
         userInfo={userInfo}
+        setViewMode={setViewMode}
       />
-      {currentPage === 'Home' && <Home color={red} setColor={setRed} userInfo={userInfo} />}
-      {currentPage === 'Notes' && <Notes userInfo={userInfo} />}
-      {/* {currentPage === 'Dashboard' && <Dashboard />} */}
-    </>
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/" element={<Home />} />
-    //     <Route path="/notes" element={<Notes />} />
-    //     <Route path="/dashboard" element={<Dashboard />} />
-    //   </Routes>
-    // </BrowserRouter>
+      {userInfo ? (
+        <>
+          <div style={{ color: 'white' }}>{`哈囉，${userInfo.email} ！`}</div>
+          <Notes userInfo={userInfo} viewMode={viewMode} />
+        </>
+      ) : (
+        <div style={boxStyle}>
+          <SignInCard />
+        </div>
+      )}
+    </Container>
   );
 }
 

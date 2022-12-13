@@ -2,85 +2,103 @@
 /* eslint-disable react/prop-types */
 
 import styled from 'styled-components';
+import {
+  MdOutlineDarkMode, MdAdd, MdPlayArrow, MdOutlineGridView, MdList,
+} from 'react-icons/md';
 
 const Header = styled.header`
-  background: #CDCDCD;
-  box-shadow: 0px 4px 8px 2px rgb(0 0 0 / 0.2);
+  background: #000000;
+  border-radius: 100px;
   color: #eeeeee;
-  font-size: 18px;
   height: 60px;
-  width: 100%;
-  padding: 0 20px;
+  width: 900px;
+  padding: 0 25px;
   position: fixed;
-  top: 0;
-  left: 0;  
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const NotesButton = styled.button`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 700;
-`;
-
-const HomeButton = styled.button`
-  font-weight: 700;
-  color: black;
-  background: none;
-  &:hover {background: none; color: #444444;}
-`;
-
-// const DashboardButton = styled.button`
-//   font-weight: 700;
-//   color: black;
-//   background: none;
-//   &:hover {background: none; color: #444444;}
-// `;
-
-const ShortCutButton = styled.button`
-  height: 37px;
-  width: 37px;
-  padding: 0;
-  background: #A8A8A8;
-`;
-
-const ShortCutToolbox = styled.div`
-  width: 130px;
+const Button = styled.button`
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  font-size: 14px;
   display: flex;
-  justify-content: space-between;
-  margin-right: 150px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
 `;
 
-export default function Navbar({ changePage, signOut, userInfo }) {
+const DisplayModeButton = styled.button`
+  width: 35px;
+  height: 35px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LogOutButton = styled.button`
+  // width: 30px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 20px;
+  font-size: 14px;
+`;
+
+export default function Navbar({ signOut, userInfo, setViewMode }) {
   return (
     <Header>
-      <HomeButton
-        style={{ fontWeight: 700 }}
-        onClick={() => changePage('Home')}
+      <div
+        style={{
+          fontWeight: 700,
+          fontSize: 16,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
-        ▲ Feed My Mind
-      </HomeButton>
-
-      <NotesButton onClick={() => changePage('Notes')}>
-        Notes
-      </NotesButton>
-
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <ShortCutToolbox>
-          <ShortCutButton style={{ color: '#1DD79F' }}>▶</ShortCutButton>
-          <ShortCutButton style={{ color: '#F4B510' }}>+</ShortCutButton>
-          <ShortCutButton>☾</ShortCutButton>
-        </ShortCutToolbox>
-        {userInfo ? <button onClick={signOut}>登出</button> : null}
-        {/* <DashboardButton
-          onClick={() => changePage('Dashboard')}
-        >
-          Dashboard
-        </DashboardButton> */}
+        <img src="logo_temp.png" alt="logo" width="20" style={{ marginRight: 10 }} />
+        <div>Feed My Mind</div>
+        <Button style={{ marginLeft: 10 }}>
+          <MdOutlineDarkMode size={25} color="#888888" />
+        </Button>
       </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <DisplayModeButton
+          style={{ borderRadius: '5px 0 0 5px', marginLeft: 3 }}
+          onClick={() => setViewMode('ListView')}
+        >
+          <MdList size={26} color="#888888" />
+        </DisplayModeButton>
+        <DisplayModeButton
+          style={{ borderRadius: '0 5px 5px 0', marginRight: 8 }}
+          onClick={() => setViewMode('GridView')}
+        >
+          <MdOutlineGridView size={23} color="#888888" />
+        </DisplayModeButton>
+        <Button>
+          <MdAdd size={25} color="#F4B510" />
+        </Button>
+        <Button>
+          <MdPlayArrow size={25} color="#1DD79F" />
+        </Button>
+      </div>
+
+      {userInfo ? <LogOutButton onClick={signOut}>Log Out</LogOutButton> : null}
     </Header>
   );
 }

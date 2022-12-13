@@ -9,8 +9,8 @@ const GridViewCard = styled.div`
   padding: 20px;
   margin: 10px 20px 30px 0;
   border-radius: 10px;
-  box-shadow: 4px 8px 10px 2px rgba(0, 0, 0, 0.15);
-  background: white;
+  // box-shadow: 1px 1px 15px 4px rgb(54 54 50 / 25%);
+  background: #171717;
 `;
 
 const ListViewCard = styled.div`
@@ -19,8 +19,8 @@ const ListViewCard = styled.div`
   padding: 10px;
   margin: 20px 0;
   border-radius: 10px;
-  box-shadow: 4px 8px 10px 2px rgba(0, 0, 0, 0.15);
-  background: white;
+  // box-shadow: 1px 1px 15px 4px rgb(54 54 50 / 25%);
+  background: #171717;
   display: flex;
   align-items: center;
   justify-content: space-between;

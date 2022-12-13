@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import SignInCard from '../SignInCard';
+import SignInCard from '../components/SignInCard';
 
 function Container({ children }) {
   return (
