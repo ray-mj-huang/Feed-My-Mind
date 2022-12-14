@@ -1,13 +1,11 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
-
 import '../App.css';
-
 import Card from '../Card';
 import ReadingMode from '../ReadingMode';
 
@@ -28,14 +26,22 @@ function Container({ children }) {
   );
 }
 
-export default function Notes({ userInfo, viewMode }) {
-  const [newId, setNewId] = useState(1);
-  const [cards, setCards] = useState([]);
-  const [isRead, setIsRead] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [readingCardId, setReadingCardId] = useState(0);
-  const [isChange, setIsChange] = useState(0);
-
+export default function Notes({
+  userInfo,
+  viewMode,
+  newId,
+  setNewId,
+  cards,
+  setCards,
+  isRead,
+  setIsRead,
+  isCreating,
+  setIsCreating,
+  readingCardId,
+  setReadingCardId,
+  isChange,
+  setIsChange,
+}) {
   useEffect(() => {
     if (userInfo) {
       const ref = doc(db, 'users', userInfo.uid);
@@ -83,6 +89,7 @@ export default function Notes({ userInfo, viewMode }) {
 
   return (
     <Container>
+
       {isRead && (
         <ReadingMode
           cardId={readingCardId}
@@ -95,10 +102,7 @@ export default function Notes({ userInfo, viewMode }) {
         />
       )}
 
-      <div>{isChange}</div>
       {userInfo ? userInfo.email : '請登入噢～'}
-
-      <p>{newId}</p>
 
       <button
         onClick={() => {

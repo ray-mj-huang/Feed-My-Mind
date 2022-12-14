@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {
   MdOutlineDarkMode, MdAdd, MdPlayArrow, MdOutlineGridView, MdList,
 } from 'react-icons/md';
+import { GoSignOut } from 'react-icons/go';
 
 const Header = styled.header`
   background: #000000;
@@ -43,14 +44,28 @@ const DisplayModeButton = styled.button`
 `;
 
 const LogOutButton = styled.button`
-  // width: 30px;
-  height: 40px;
-  padding: 0 20px;
+  height: 35px;
+  padding: 0 16px;
   border-radius: 20px;
   font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #cccccc;
 `;
 
-export default function Navbar({ signOut, userInfo, setViewMode }) {
+export default function Navbar({
+  signOut,
+  userInfo,
+  setViewMode,
+  setCards,
+  setNewId,
+  setIsCreating,
+  setIsRead,
+  setReadingCardId,
+  newId,
+  cards,
+}) {
   return (
     <Header>
       <div
@@ -91,14 +106,31 @@ export default function Navbar({ signOut, userInfo, setViewMode }) {
           <MdOutlineGridView size={23} color="#888888" />
         </DisplayModeButton>
         <Button>
-          <MdAdd size={25} color="#F4B510" />
+          <MdAdd
+            size={25}
+            color="#F4B510"
+            onClick={() => {
+              setCards([{
+                id: newId, isEdit: true, title: '標題', content: '內文', createdTime: null, editedTime: null, color: '#6BD677',
+              }, ...cards]);
+              setNewId((id) => id + 1);
+              setIsRead(true);
+              setReadingCardId(newId);
+              setIsCreating(true);
+            }}
+          />
         </Button>
         <Button>
           <MdPlayArrow size={25} color="#1DD79F" />
         </Button>
       </div>
 
-      {userInfo ? <LogOutButton onClick={signOut}>Log Out</LogOutButton> : null}
+      {userInfo ? (
+        <LogOutButton onClick={signOut}>
+          <GoSignOut size={20} style={{ margin: '3px 7px 0 0' }} />
+          Log Out
+        </LogOutButton>
+      ) : null}
     </Header>
   );
 }

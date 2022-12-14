@@ -25,7 +25,7 @@ function Container({ children }) {
         width: '100%',
         minHeight: '100vh',
         background: '#1e1e1e',
-        paddingTop: '50px',
+        paddingTop: '75px',
       }}
     >
       {children}
@@ -36,6 +36,13 @@ function Container({ children }) {
 function App() {
   const [userInfo, setUserInfo] = useState('');
   const [viewMode, setViewMode] = useState('ListView');
+
+  const [newId, setNewId] = useState(1);
+  const [cards, setCards] = useState([]);
+  const [isRead, setIsRead] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [readingCardId, setReadingCardId] = useState(0);
+  const [isChange, setIsChange] = useState(0);
 
   useEffect(() => {
     onAuthStateChanged(auth, (userData) => {
@@ -70,12 +77,31 @@ function App() {
         signOut={() => signOutFunction()}
         userInfo={userInfo}
         setViewMode={setViewMode}
+        setCards={setCards}
+        setNewId={setNewId}
+        setIsCreating={setIsCreating}
+        setIsRead={setIsRead}
+        setReadingCardId={setReadingCardId}
+        newId={newId}
+        cards={cards}
       />
       {userInfo ? (
-        <>
-          <div style={{ color: 'white' }}>{`哈囉，${userInfo.email} ！`}</div>
-          <Notes userInfo={userInfo} viewMode={viewMode} />
-        </>
+        <Notes
+          userInfo={userInfo}
+          viewMode={viewMode}
+          newId={newId}
+          setNewId={setNewId}
+          cards={cards}
+          setCards={setCards}
+          isRead={isRead}
+          setIsRead={setIsRead}
+          isCreating={isCreating}
+          setIsCreating={setIsCreating}
+          readingCardId={readingCardId}
+          setReadingCardId={setReadingCardId}
+          isChange={isChange}
+          setIsChange={setIsChange}
+        />
       ) : (
         <div style={boxStyle}>
           <SignInCard />

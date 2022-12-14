@@ -134,7 +134,7 @@ export default function ReadingMode({
             const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
             const hour = timeData.getHours();
             const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
-            const createdTimeValue = `created: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
+            const createdTimeValue = `${year}-${month}-${date} ${day} ${hour}:${minutes}`;
             setCards(
               cards.map((c) => {
                 if (c.id === readingId) {
@@ -179,7 +179,7 @@ export default function ReadingMode({
               const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
               const hour = timeData.getHours();
               const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
-              const editedTimeValue = `edited: ${year} / ${month} / ${date} ${day} ${hour}:${minutes}`;
+              const editedTimeValue = `${year}-${month}-${date} ${day} ${hour}:${minutes}`;
               setCards(
                 cards.map((c) => {
                   if (c.id === readingId) {
