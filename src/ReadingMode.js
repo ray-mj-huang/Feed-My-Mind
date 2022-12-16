@@ -2,6 +2,73 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import styled from 'styled-components';
+import { MdOutlineEdit, MdClose, MdOutlineDarkMode } from 'react-icons/md';
+import { HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineTrash } from 'react-icons/hi';
+
+const CardButton = styled.button`
+  color: #cccccc;
+  font-size: 14px;
+  height: 28px;
+  padding: 0 14px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ArrowButton = styled.button`
+  color: #cccccc;
+  font-size: 14px;
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Container = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  // background: #333333ee;
+  // background: #131313;
+  background: #383838;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const ReadingCard = styled.div`
+  width: 350px;
+  height: 500px;
+  padding: 20px;
+  border-radius: 6px;
+  background: #171717;
+  z-index: 1;
+`;
+
+const TimeBox = styled.div`
+  color: #444444;
+  font-size: 12px;
+`;
+
+const AriticleContainer = styled.div`
+  padding: 20px 10px;
+  background: #22222233;
+  height: 350px;
+  overflow: scroll;
+`;
+
+const editStyle = {
+  background: 'black',
+  padding: '5px 10px',
+};
 
 export default function ReadingMode({
   cardId, cards, setCards, setIsRead, isCreating, setIsCreating, setIsChange,
@@ -61,191 +128,269 @@ export default function ReadingMode({
     );
   }
 
-  const cardStyle = {
-    width: '350px',
-    height: '500px',
-    padding: '20px',
-    borderRadius: '6px',
-    background: 'white',
-  };
-
-  const containerStyle = {
-    position: 'fixed',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    background: 'rgba(34, 58, 128, 0.9)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-  };
-
   return (
-    <div
-      style={containerStyle}
-    >
-      <button
-        onClick={() => {
-          setIsRead(false);
-          setCards(cards.filter((c) => c.id !== cardId));
-          setIsChange((n) => n + 1);
+    <Container>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          width: 330,
+          // position: 'absolute',
+          // top: '60px',
+          // left: '50%',
+          // transform: 'translateX(-50%)',
+          margin: '-100px 0 40px 0',
         }}
       >
-        delete
-      </button>
-
-      {isCreating ? (
-        <button
-          onClick={() => {
-            setIsRead(false);
-            setIsCreating(false);
-            setCards(cards.filter((c) => c.id !== cardId));
-          }}
-        >
-          放棄建立
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            setIsRead(false);
-            setCards(
-              cards.map((c) => {
-                if (c.id === readingId) {
-                  return { ...c, isEdit: false };
-                }
-                return c;
-              }),
-            );
-          }}
-        >
-          跳出
-        </button>
-      )}
-
-      {isCreating ? (
-        <button
-          onClick={() => {
-            const timeData = new Date();
-            const year = timeData.getFullYear();
-            const month = timeData.getMonth();
-            const date = timeData.getDate();
-            const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
-            const hour = timeData.getHours();
-            const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
-            const createdTimeValue = `${year}-${month}-${date} ${day} ${hour}:${minutes}`;
-            setCards(
-              cards.map((c) => {
-                if (c.id === readingId) {
-                  return {
-                    ...c,
-                    isEdit: !card.isEdit,
-                    title: editingTitle,
-                    content: editingContent,
-                    createdTime: createdTimeValue,
-                    color: editingColor,
-                  };
-                }
-                return c;
-              }),
-            );
-            setIsCreating(false);
-            setIsChange((n) => n + 1);
-          }}
-        >
-          建立
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            // 開啟編輯
-            if (!card.isEdit) {
-              setCards(
-                cards.map((c) => {
-                  if (c.id === readingId) {
-                    return { ...c, isEdit: !card.isEdit };
-                  }
-                  return c;
-                }),
-              );
-            }
-            // 儲存
-            if (card.isEdit) {
-              const timeData = new Date();
-              const year = timeData.getFullYear();
-              const month = timeData.getMonth();
-              const date = timeData.getDate();
-              const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
-              const hour = timeData.getHours();
-              const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
-              const editedTimeValue = `${year}-${month}-${date} ${day} ${hour}:${minutes}`;
-              setCards(
-                cards.map((c) => {
-                  if (c.id === readingId) {
-                    return {
-                      ...c,
-                      isEdit: !card.isEdit,
-                      title: editingTitle,
-                      content: editingContent,
-                      editedTime: editedTimeValue,
-                      color: editingColor,
-                    };
-                  }
-                  return c;
-                }),
-              );
-              setIsChange((n) => n + 1);
-            }
-          }}
-        >
-          { card.isEdit ? '儲存' : '點此編輯' }
-        </button>
-      ) }
-
-      <h4 style={{ color: 'white' }}>{card.isEdit ? 'Edit 模式' : 'Read 模式'}</h4>
-
-      <div
-        style={cardStyle}
-      >
-        <div style={{ background: card.color, width: 15, height: 15 }} />
-        {card.isEdit ? (
-          <input
-            onChange={(e) => setEditingColor(e.target.value)}
-            type="color"
-          />
-        )
-          : null}
-        <h2>{`# ${card.id}`}</h2>
-        <h1
-          contentEditable={card.isEdit}
-          onInput={(e) => {
-            setEditingTitle(e.target.innerHTML);
-          }}
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: card.title }}
-        />
         <div
-          contentEditable={card.isEdit}
-          onInput={(e) => {
-            setEditingContent(e.target.innerHTML);
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            background: '#343434',
+            padding: '0 25px',
+            borderRadius: 30,
           }}
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: card.content }}
-        />
+        >
+          <CardButton style={{ marginRight: 15 }}>
+            <MdOutlineDarkMode size={25} color="#888888" />
+          </CardButton>
+          <h4 style={{ color: 'white' }}>{card.isEdit ? 'Editing Mode' : 'Reading Mode'}</h4>
+        </div>
+        {isCreating ? (
+          <CardButton
+            onClick={() => {
+              setIsRead(false);
+              setIsCreating(false);
+              setCards(cards.filter((c) => c.id !== cardId));
+            }}
+          >
+            Quit
+          </CardButton>
+        ) : (
+          <CardButton
+            onClick={() => {
+              setIsRead(false);
+              setCards(
+                cards.map((c) => {
+                  if (c.id === readingId) {
+                    return { ...c, isEdit: false };
+                  }
+                  return c;
+                }),
+              );
+            }}
+          >
+            <MdClose size={20} />
+          </CardButton>
+        )}
       </div>
 
-      {isCreating || (
-        <>
-          <button onClick={handlePrevClick} disabled={!hasPrev}>
-            往左
-          </button>
-          <button onClick={handleNextClick} disabled={!hasNext}>
-            往右
-          </button>
-        </>
-      )}
+      <ReadingCard>
+        <div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              borderBottom: '0.5px solid #1e1e1e',
+              paddingBottom: '10px',
+            }}
+          >
+            <div>{`# ${card.id}`}</div>
+            {isCreating ? (
+              <CardButton
+                onClick={() => {
+                  const timeData = new Date();
+                  const year = timeData.getFullYear();
+                  const month = timeData.getMonth();
+                  const date = timeData.getDate();
+                  const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
+                  const hour = timeData.getHours();
+                  const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
+                  const createdTimeValue = `${year}-${month}-${date} ${day} ${hour}:${minutes}`;
+                  setCards(
+                    cards.map((c) => {
+                      if (c.id === readingId) {
+                        return {
+                          ...c,
+                          isEdit: !card.isEdit,
+                          title: editingTitle,
+                          content: editingContent,
+                          createdTime: createdTimeValue,
+                          color: editingColor,
+                        };
+                      }
+                      return c;
+                    }),
+                  );
+                  setIsCreating(false);
+                  setIsChange((n) => n + 1);
+                }}
+              >
+                Create
+              </CardButton>
+            ) : (
+              <CardButton
+                onClick={() => {
+                  // 開啟編輯
+                  if (!card.isEdit) {
+                    setCards(
+                      cards.map((c) => {
+                        if (c.id === readingId) {
+                          return { ...c, isEdit: !card.isEdit };
+                        }
+                        return c;
+                      }),
+                    );
+                  }
+                  // 儲存
+                  if (card.isEdit) {
+                    const timeData = new Date();
+                    const year = timeData.getFullYear();
+                    const month = timeData.getMonth();
+                    const date = timeData.getDate();
+                    const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
+                    const hour = timeData.getHours();
+                    const minutes = (timeData.getMinutes() < 10 ? '0' : '') + timeData.getMinutes();
+                    const editedTimeValue = `${year}-${month}-${date} ${day} ${hour}:${minutes}`;
+                    setCards(
+                      cards.map((c) => {
+                        if (c.id === readingId) {
+                          return {
+                            ...c,
+                            isEdit: !card.isEdit,
+                            title: editingTitle,
+                            content: editingContent,
+                            editedTime: editedTimeValue,
+                            color: editingColor,
+                          };
+                        }
+                        return c;
+                      }),
+                    );
+                    setIsChange((n) => n + 1);
+                  }
+                }}
+              >
+                { card.isEdit ? 'Save Changes' : (
+                  <>
+                    <MdOutlineEdit style={{ marginRight: '8px' }} />
+                    Edit
+                  </>
+                )}
+              </CardButton>
+            ) }
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              borderBottom: '0.5px solid #1e1e1e',
+              padding: '10px 0',
+            }}
+          >
+            <TimeBox>{card.createdTime}</TimeBox>
+            <TimeBox>{card.editedTime}</TimeBox>
+          </div>
+        </div>
+        <AriticleContainer>
+          <div
+            style={{
+              display: 'flex',
+              position: 'relative',
+            }}
+          >
+            <div style={{ background: card.color, width: 65, height: 12 }} />
+            {card.isEdit ? (
+              <>
+                <div
+                  style={{
+                    position: 'absolute',
+                    zIndex: 1,
+                    top: '50%',
+                    left: '50%',
+                    color: '#aaaaaa',
+                    transform: 'translate(-12%, -50%)',
+                    fontSize: 12,
+                    pointerEvents: 'none',
+                  }}
+                >
+                  Change Color
+                </div>
+                <input
+                  onChange={(e) => setEditingColor(e.target.value)}
+                  type="color"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: 225,
+                    height: 12,
+                  }}
+                />
+              </>
+            ) : null}
+          </div>
+          <h1
+            contentEditable={card.isEdit}
+            onInput={(e) => {
+              setEditingTitle(e.target.innerHTML);
+            }}
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: card.title }}
+            style={card.isEdit ? editStyle : null}
+          />
+          <div
+            contentEditable={card.isEdit}
+            onInput={(e) => {
+              setEditingContent(e.target.innerHTML);
+            }}
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: card.content }}
+            style={card.isEdit ? editStyle : null}
+          />
+        </AriticleContainer>
+        <div
+          style={{
+            padding: '13px 0',
+            borderTop: '1.5px solid #1a1a1a',
+          }}
+        >
+          <CardButton
+            onClick={() => {
+              setIsRead(false);
+              setCards(cards.filter((c) => c.id !== cardId));
+              setIsChange((n) => n + 1);
+            }}
+          >
+            <HiOutlineTrash size={18} style={{ marginRight: '8px' }} />
+            Delete
+          </CardButton>
+        </div>
+      </ReadingCard>
 
-    </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translateX(-50%) translateY(-50%)',
+          display: 'flex',
+          width: 600,
+          justifyContent: 'space-between',
+        }}
+      >
+        {isCreating || (
+          <>
+            <ArrowButton onClick={() => handlePrevClick()} disabled={!hasPrev}>
+              <HiOutlineArrowLeft size={27} />
+            </ArrowButton>
+            <ArrowButton onClick={() => handleNextClick()} disabled={!hasNext}>
+              <HiOutlineArrowRight size={27} />
+            </ArrowButton>
+          </>
+        )}
+      </div>
+    </Container>
   );
 }

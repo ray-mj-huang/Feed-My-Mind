@@ -111,7 +111,7 @@ export default function Navbar({
             color="#F4B510"
             onClick={() => {
               setCards([{
-                id: newId, isEdit: true, title: '標題', content: '內文', createdTime: null, editedTime: null, color: '#6BD677',
+                id: newId, isEdit: true, title: 'Title', content: 'Type your content here...', createdTime: null, editedTime: null, color: '#6BD677',
               }, ...cards]);
               setNewId((id) => id + 1);
               setIsRead(true);

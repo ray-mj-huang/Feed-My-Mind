@@ -2,9 +2,6 @@
 /* eslint-disable react/button-has-type */
 
 import styled from 'styled-components';
-// import { AiOutlineFullscreen } from 'react-icons/ai';
-// import { MdDelete } from 'react-icons/md';
-// import { FaEye } from 'react-icons/fa';
 import { HiOutlineEye, HiOutlineTrash } from 'react-icons/hi';
 
 const GridViewCard = styled.div`
