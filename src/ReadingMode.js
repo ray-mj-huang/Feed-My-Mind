@@ -70,7 +70,6 @@ const TimeBox = styled.div`
 
 const AriticleContainer = styled.div`
   padding: 20px 10px;
-  background: #22222233;
   height: 350px;
   overflow: scroll;
   @media screen and (max-width: 900px) {
