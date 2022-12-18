@@ -1,8 +1,29 @@
 /* eslint-disable react/button-has-type */
 import { useState } from 'react';
+import styled from 'styled-components';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase';
+
+const Container = styled.div`
+  width: 400px;
+  height: 420px;
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  margin: 80px 0 0 0;
+  background: #111111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 900px) {
+    width: 350px;
+    height: 375px;
+    margin-top: 25%;
+  }
+`;
 
 function SignUpBox() {
   const [emailValue, setEmailValue] = useState('');
@@ -40,18 +61,57 @@ function SignUpBox() {
 
   return (
     <form>
-      <div><b>註冊：</b></div>
-      <input id="email" type="email" placeholder="輸入帳號" value={emailValue} onChange={(e) => setEmailValue(e.target.value)} />
-      <input id="password" type="password" placeholder="輸入密碼" value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} />
+      <input
+        id="email"
+        type="email"
+        placeholder="email"
+        value={emailValue}
+        onChange={(e) => setEmailValue(e.target.value)}
+        style={{
+          margin: '5px 0',
+          padding: 5,
+          border: 'none',
+          borderRadius: 5,
+          height: 30,
+          width: 250,
+          background: 'black',
+          color: 'white',
+        }}
+      />
+      <input
+        id="password"
+        type="password"
+        placeholder="password"
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
+        style={{
+          margin: '5px 0',
+          padding: 5,
+          border: 'none',
+          borderRadius: 5,
+          height: 30,
+          width: 250,
+          background: 'black',
+          color: 'white',
+        }}
+      />
       <button
+        style={{
+          margin: '20px 0 80px 0',
+          padding: 5,
+          border: 'none',
+          borderRadius: 5,
+          height: 30,
+          width: 250,
+          fontSize: 16,
+        }}
         onClick={(e) => {
           e.preventDefault();
           signUp(emailValue, passwordValue);
         }}
       >
-        ENTER
+        Sign Up
       </button>
-      <hr />
     </form>
   );
 }
@@ -77,19 +137,65 @@ function LoginBox() {
   }
 
   return (
-    <form>
-      <div><b>登入：</b></div>
-      <input id="email" type="email" placeholder="輸入帳號" value={emailValue} onChange={(e) => setEmailValue(e.target.value)} />
-      <input id="password" type="password" placeholder="輸入密碼" value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} />
+    <form
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <input
+        style={{
+          margin: '5px 0',
+          padding: 5,
+          border: 'none',
+          borderRadius: 5,
+          height: 30,
+          width: 250,
+          background: 'black',
+          color: 'white',
+        }}
+        id="email"
+        type="email"
+        placeholder="email"
+        value={emailValue}
+        onChange={(e) => setEmailValue(e.target.value)}
+      />
+      <input
+        style={{
+          margin: '5px 0',
+          padding: 5,
+          border: 'none',
+          borderRadius: 5,
+          height: 30,
+          width: 250,
+          background: 'black',
+          color: 'white',
+        }}
+        id="password"
+        type="password"
+        placeholder="password"
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
+      />
       <button
+        style={{
+          margin: '20px 0 80px 0',
+          padding: 5,
+          border: 'none',
+          borderRadius: 5,
+          height: 30,
+          width: 250,
+          fontSize: 16,
+        }}
         onClick={(e) => {
           e.preventDefault();
           login(emailValue, passwordValue);
         }}
       >
-        ENTER
+        Login
       </button>
-      <hr />
     </form>
   );
 }
@@ -98,20 +204,44 @@ export default function SignInCard() {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div>
+    <Container>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <img src="logo_temp.png" alt="logo" width="20" style={{ marginRight: 10 }} />
+        <h1>Feed My Mind</h1>
+      </div>
       {isLogin ? (
         <>
           <LoginBox />
-          尚未有帳號？點此進行註冊：
-          <button onClick={() => setIsLogin(false)}>來去註冊</button>
+          <div>
+            Do not have an account yet?
+            <button
+              onClick={() => setIsLogin(false)}
+              style={{ padding: 5, borderRadius: 5, marginLeft: 8 }}
+            >
+              Sign uo here
+            </button>
+          </div>
         </>
       ) : (
         <>
           <SignUpBox />
-          返回登入：
-          <button onClick={() => setIsLogin(true)}>點此返回</button>
+          <div>
+            Back to
+            <button
+              onClick={() => setIsLogin(true)}
+              style={{ padding: 5, borderRadius: 5, marginLeft: 8 }}
+            >
+              Login
+            </button>
+          </div>
         </>
       )}
-    </div>
+    </Container>
   );
 }

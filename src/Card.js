@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
-
 import styled from 'styled-components';
 import { HiOutlineEye, HiOutlineTrash } from 'react-icons/hi';
 
 const GridViewCard = styled.div`
-  width: 350px;
-  height: 350px;
+  width: 320px;
+  height: 320px;
   padding: 20px 20px 12px 20px;
   margin: 10px 20px 30px 0;
   border-radius: 10px;
@@ -19,13 +18,16 @@ const GridViewCard = styled.div`
     background: #111111;
     box-shadow: 1px 1px 15px 4px rgb(54 54 50 / 25%);
   }
+  @media screen and (max-width: 900px ) {
+    
+  }
 `;
 
 const ListViewCard = styled.div`
   width: 900px;
   height: 50px;
   padding: 0 10px;
-  margin: 20px 0;
+  margin: 20px auto;
   border-radius: 10px;
   background: #171717;
   display: flex;
@@ -35,6 +37,10 @@ const ListViewCard = styled.div`
   &:hover {
     background: #111111;
     box-shadow: 1px 1px 15px 4px rgb(54 54 50 / 25%);
+  }
+  @media screen and (max-width: 900px ) {
+    width: 95%;
+    margin: 10px auto;
   }
 `;
 
@@ -49,9 +55,63 @@ const CardButton = styled.button`
   justify-content: center;
 `;
 
+const CardReadButton = styled.button`
+  color: #cccccc;
+  font-size: 14px;
+  height: 28px;
+  padding: 0 14px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+`;
+
 const TimeBox = styled.div`
   color: #444444;
   font-size: 12px;
+`;
+
+const ListViewInfoBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: 88%;
+`;
+
+const ListViewToolBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 20%;
+  border-left: 1.5px solid #1e1e1e;
+  height: 70%;
+  padding-left: 26px;
+  @media screen and (max-width: 900px) {
+    width: 12%;
+    padding-left: 3%;
+  }
+`;
+
+const ListTitleBox = styled.div`
+  margin: 0px 10px 0 5px;
+  font-size: 16px;
+  letter-spacing: 1.2px;
+  width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  @media screen and (max-width: 900px) {
+    width: 155px;
+  }
+`;
+
+const ListTimeBox = styled.div`
+  color: #666666;
+  @media screen and (max-width: 900px) {
+    width: 150px;
+    font-size: 12px;
+  }
 `;
 
 export default function Card({
@@ -132,13 +192,7 @@ export default function Card({
         <ListViewCard
           onClick={onRead}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '75%',
-            }}
-          >
+          <ListViewInfoBox>
             <div
               style={{
                 background: card.color,
@@ -151,32 +205,16 @@ export default function Card({
                 margin: '0 10px 0 10px',
               }}
             />
-            <div
+            <ListTitleBox
               // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{ __html: card.title }}
-              style={{
-                margin: '0px 10px 0 5px',
-                fontSize: 16,
-                letterSpacing: 1.2,
-                width: '60%',
-              }}
             />
-            <div style={{ color: '#666666' }}>
+            <ListTimeBox>
               {card.createdTime}
-            </div>
-          </div>
+            </ListTimeBox>
+          </ListViewInfoBox>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '20%',
-              borderLeft: '1.5px solid #1e1e1e',
-              height: '70%',
-              paddingLeft: '26px',
-            }}
-          >
+          <ListViewToolBox>
             <CardButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -186,13 +224,13 @@ export default function Card({
             >
               <HiOutlineTrash size={18} />
             </CardButton>
-            <CardButton
+            <CardReadButton
               onClick={onRead}
             >
               <HiOutlineEye size={18} style={{ marginRight: 7 }} />
               Read
-            </CardButton>
-          </div>
+            </CardReadButton>
+          </ListViewToolBox>
         </ListViewCard>
       )}
     </div>

@@ -13,6 +13,17 @@ img {
   display: block;
 }
 
+input:-internal-autofill-selected {
+  background: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f4b510 inset !important;
+}
+
 button {
   display: inline-block;
   border: none;
@@ -81,7 +92,7 @@ input[type="color"] {
   padding: 0;
 }
 
-.cardContainer {
+.gridViewContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -90,19 +101,24 @@ input[type="color"] {
 }
 
 @media screen and (max-width: 800px) {
-  .cardContainer {
-    padding-left: calc((100% - 350px)/2);
+  .gridViewContainer {
+    padding-left: calc((100% - 320px)/2);
   }
 }
 
 @media screen and (min-width: 801px) and (max-width: 1199px) {
-  .cardContainer {
-    padding-left: calc((100% - 720px)/2);
+  .gridViewContainer {
+    padding-left: calc((100% - 660px)/2);
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .cardContainer {
-    padding-left: calc((100% - 1090px)/2);
+  .gridViewContainer {
+    padding-left: calc((100% - 1000px)/2);
   }
+}
+
+.listViewContainer {
+  width: 100%;
+  padding-top: 20px;
 }

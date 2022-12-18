@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 // import { onAuthStateChanged } from 'firebase/auth';
 // import { auth } from './firebase';
+import styled from 'styled-components';
 import './App.css';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebase';
@@ -11,31 +12,22 @@ import Navbar from './components/Navbar';
 import Notes from './pages/Notes';
 import SignInCard from './components/SignInCard';
 
-const boxStyle = {
-  width: '500px', border: '1px solid white', borderRadius: '5px', padding: '20px', color: 'white', textAlign: 'center', margin: '10px',
-};
-
-function Container({ children }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
-        minHeight: '100vh',
-        background: '#1e1e1e',
-        paddingTop: '75px',
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background: #1e1e1e;
+  padding-top: 75px;
+  @media screen and (max-width: 900px) {
+    padding-top: 60px;
+  }
+`;
 
 function App() {
   const [userInfo, setUserInfo] = useState('');
-  const [viewMode, setViewMode] = useState('ListView');
+  const [viewMode, setViewMode] = useState('GridView');
 
   const [newId, setNewId] = useState(1);
   const [cards, setCards] = useState([]);
@@ -102,11 +94,7 @@ function App() {
           isChange={isChange}
           setIsChange={setIsChange}
         />
-      ) : (
-        <div style={boxStyle}>
-          <SignInCard />
-        </div>
-      )}
+      ) : (<SignInCard />)}
     </Container>
   );
 }

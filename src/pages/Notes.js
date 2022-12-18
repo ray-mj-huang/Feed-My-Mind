@@ -1,6 +1,8 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import { useEffect } from 'react';
+import styled from 'styled-components';
+import { MdAdd } from 'react-icons/md';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
@@ -9,22 +11,53 @@ import '../App.css';
 import Card from '../Card';
 import ReadingMode from '../ReadingMode';
 
-function Container({ children }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-        minHeight: '100vh',
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+`;
+
+const WelcomeUserCard = styled.div`
+  width: 320px;
+  height: 120px;
+  margin-top: 20px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 24px;
+  color: #aaaaaa;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+`;
+
+const AddNoteCard = styled.div`
+  width: 320px;
+  height: 120px;
+  border-radius: 10px;
+  background: rgb(0,0,0);
+  background: linear-gradient(337deg, rgba(0,0,0,1) 19%, rgba(23,23,23,1) 100%);
+  margin: 20px 0;
+  padding: 15px 0 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  &:hover {
+    background: linear-gradient(337deg, rgba(34,34,34,1) 19%, rgba(51,51,51,1) 100%);
+  }
+  @media screen and (max-width: 900px) {
+    margin: 20px 0 0 0;
+  }
+`;
 
 export default function Notes({
   userInfo,
@@ -102,9 +135,14 @@ export default function Notes({
         />
       )}
 
-      {userInfo ? userInfo.email : '請登入噢～'}
+      {userInfo ? (
+        <WelcomeUserCard>
+          <i>Hello!</i>
+          <i>{userInfo.email}</i>
+        </WelcomeUserCard>
+      ) : 'Please login first'}
 
-      <button
+      <AddNoteCard
         onClick={() => {
           setCards([{
             id: newId, isEdit: true, title: 'Title', content: 'Type your content here...', createdTime: null, editedTime: null, color: '#6BD677',
@@ -114,8 +152,9 @@ export default function Notes({
           setIsCreating(true);
         }}
       >
-        新增筆記
-      </button>
+        <MdAdd size={35} color="#F4B510" />
+        <div>Add Note</div>
+      </AddNoteCard>
 
       <div
         style={{
@@ -127,7 +166,7 @@ export default function Notes({
         }}
       >
         <div
-          className={viewMode === 'GridView' && 'cardContainer'}
+          className={viewMode === 'GridView' ? 'gridViewContainer' : 'listViewContainer'}
         >
           {userInfo ? cardList : '這裡沒有汁料'}
         </div>

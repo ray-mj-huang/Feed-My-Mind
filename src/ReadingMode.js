@@ -1,10 +1,44 @@
 /* eslint-disable no-console */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { MdOutlineEdit, MdClose, MdOutlineDarkMode } from 'react-icons/md';
 import { HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineTrash } from 'react-icons/hi';
+
+const Container = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  // background: #333333ee;
+  // background: #131313;
+  background: #383838;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  @media screen and (max-width: 900px) {
+    justify-content: start;
+    padding-top: 20px;
+  } 
+`;
+
+const ReadingCard = styled.div`
+  width: 350px;
+  height: 500px;
+  padding: 20px;
+  border-radius: 6px;
+  background: #171717;
+  z-index: 1;
+  @media screen and (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70%;
+  }
+`;
 
 const CardButton = styled.button`
   color: #cccccc;
@@ -29,30 +63,6 @@ const ArrowButton = styled.button`
   justify-content: center;
 `;
 
-const Container = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  // background: #333333ee;
-  // background: #131313;
-  background: #383838;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const ReadingCard = styled.div`
-  width: 350px;
-  height: 500px;
-  padding: 20px;
-  border-radius: 6px;
-  background: #171717;
-  z-index: 1;
-`;
-
 const TimeBox = styled.div`
   color: #444444;
   font-size: 12px;
@@ -63,6 +73,24 @@ const AriticleContainer = styled.div`
   background: #22222233;
   height: 350px;
   overflow: scroll;
+  @media screen and (max-width: 900px) {
+    height: 72%;
+  }
+`;
+
+const ChangeNoteBox = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  display: flex;
+  width: 600px;
+  justify-content: space-between;
+  @media screen and (max-width: 900px) {
+    top: unset;
+    bottom: 0;
+    width: 320px;
+  }
 `;
 
 const editStyle = {
@@ -128,6 +156,12 @@ export default function ReadingMode({
     );
   }
 
+  useEffect(() => {
+    setEditingColor(card.color);
+    setEditingTitle(card.title);
+    setEditingContent(card.content);
+  }, [cards]);
+
   return (
     <Container>
       <div
@@ -140,7 +174,7 @@ export default function ReadingMode({
           // top: '60px',
           // left: '50%',
           // transform: 'translateX(-50%)',
-          margin: '-100px 0 40px 0',
+          margin: '0 0 30px 0',
         }}
       >
         <div
@@ -356,30 +390,22 @@ export default function ReadingMode({
             borderTop: '1.5px solid #1a1a1a',
           }}
         >
-          <CardButton
-            onClick={() => {
-              setIsRead(false);
-              setCards(cards.filter((c) => c.id !== cardId));
-              setIsChange((n) => n + 1);
-            }}
-          >
-            <HiOutlineTrash size={18} style={{ marginRight: '8px' }} />
-            Delete
-          </CardButton>
+          {isCreating ? null : (
+            <CardButton
+              onClick={() => {
+                setIsRead(false);
+                setCards(cards.filter((c) => c.id !== cardId));
+                setIsChange((n) => n + 1);
+              }}
+            >
+              <HiOutlineTrash size={18} style={{ marginRight: '8px' }} />
+              Delete
+            </CardButton>
+          )}
         </div>
       </ReadingCard>
 
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translateX(-50%) translateY(-50%)',
-          display: 'flex',
-          width: 600,
-          justifyContent: 'space-between',
-        }}
-      >
+      <ChangeNoteBox>
         {isCreating || (
           <>
             <ArrowButton onClick={() => handlePrevClick()} disabled={!hasPrev}>
@@ -390,7 +416,7 @@ export default function ReadingMode({
             </ArrowButton>
           </>
         )}
-      </div>
+      </ChangeNoteBox>
     </Container>
   );
 }
