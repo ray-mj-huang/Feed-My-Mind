@@ -147,7 +147,7 @@ export default function Navbar({
               }}
             />
           </Button>
-          <Button>
+          <Button style={{ display: 'none' }}>
             <MdPlayArrow size={25} color="#1DD79F" />
           </Button>
         </ToolButtonBox>
