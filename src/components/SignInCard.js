@@ -224,7 +224,7 @@ export default function SignInCard() {
               onClick={() => setIsLogin(false)}
               style={{ padding: 5, borderRadius: 5, marginLeft: 8 }}
             >
-              Sign uo here
+              Sign up here
             </button>
           </div>
         </>
