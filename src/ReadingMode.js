@@ -280,7 +280,7 @@ export default function ReadingMode({
                   if (card.isEdit) {
                     const timeData = new Date();
                     const year = timeData.getFullYear();
-                    const month = timeData.getMonth();
+                    const month = timeData.getMonth() + 1;
                     const date = timeData.getDate();
                     const day = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(timeData);
                     const hour = timeData.getHours();
