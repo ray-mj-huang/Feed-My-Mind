@@ -1,24 +1,40 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import { useState, useEffect } from 'react';
-
 // import { onAuthStateChanged } from 'firebase/auth';
 // import { auth } from './firebase';
+import styled from 'styled-components';
 import './App.css';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebase';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
 import Notes from './pages/Notes';
-import Dashboard from './pages/Dashboard';
+import SignInCard from './components/SignInCard';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background: #1e1e1e;
+  padding-top: 75px;
+  @media screen and (max-width: 900px) {
+    padding-top: 60px;
+  }
+`;
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('Home');
-  const [red, setRed] = useState('red');
   const [userInfo, setUserInfo] = useState('');
+  const [viewMode, setViewMode] = useState('GridView');
+
+  const [newId, setNewId] = useState(1);
+  const [cards, setCards] = useState([]);
+  const [isRead, setIsRead] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [readingCardId, setReadingCardId] = useState(0);
+  const [isChange, setIsChange] = useState(0);
 
   useEffect(() => {
     onAuthStateChanged(auth, (userData) => {
@@ -48,23 +64,38 @@ function App() {
   }
 
   return (
-    <>
+    <Container>
       <Navbar
-        changePage={setCurrentPage}
         signOut={() => signOutFunction()}
         userInfo={userInfo}
+        setViewMode={setViewMode}
+        setCards={setCards}
+        setNewId={setNewId}
+        setIsCreating={setIsCreating}
+        setIsRead={setIsRead}
+        setReadingCardId={setReadingCardId}
+        newId={newId}
+        cards={cards}
       />
-      {currentPage === 'Home' && <Home color={red} setColor={setRed} userInfo={userInfo} />}
-      {currentPage === 'Notes' && <Notes userInfo={userInfo} />}
-      {currentPage === 'Dashboard' && <Dashboard />}
-    </>
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/" element={<Home />} />
-    //     <Route path="/notes" element={<Notes />} />
-    //     <Route path="/dashboard" element={<Dashboard />} />
-    //   </Routes>
-    // </BrowserRouter>
+      {userInfo ? (
+        <Notes
+          userInfo={userInfo}
+          viewMode={viewMode}
+          newId={newId}
+          setNewId={setNewId}
+          cards={cards}
+          setCards={setCards}
+          isRead={isRead}
+          setIsRead={setIsRead}
+          isCreating={isCreating}
+          setIsCreating={setIsCreating}
+          readingCardId={readingCardId}
+          setReadingCardId={setReadingCardId}
+          isChange={isChange}
+          setIsChange={setIsChange}
+        />
+      ) : (<SignInCard />)}
+    </Container>
   );
 }
 

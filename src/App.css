@@ -1,27 +1,46 @@
 * {
   box-sizing: border-box;
+  /* border: 0.1px solid #666666; */
 }
 
 body {
   background: #1e1e1e;
+  color: #eeeeee;
+  font-size: 14px;
+}
+
+img {
+  display: block;
+}
+
+input:-internal-autofill-selected {
+  background: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f4b510 inset !important;
 }
 
 button {
   display: inline-block;
   border: none;
-  padding: 0.5rem 1.25rem;
+  padding: 0;
   margin: 0;
-  font-size: 18px;
-  text-decoration: none; 
-  background: #000000;
-  color: #ffffff;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  /* transition: background 250ms ease-in-out, 
-              transform 150ms ease; */
+  text-decoration: none;
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  text-align: center;
+  cursor: pointer;
+
+  background: #222222;
+  color: #ffffff;
+
+  /* transition: background 250ms ease-in-out, 
+  transform 150ms ease; */  
 }
 
 button:disabled {
@@ -40,8 +59,40 @@ button:hover {
   transform: scale(0.99);
 } */
 
+input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
 
-.cardContainer {
+*:focus{
+  border-radius: 0;
+  outline: none;
+}
+
+::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+::-webkit-color-swatch{
+  border: 0;
+  border-radius: 0;
+}
+
+::-moz-color-swatch,
+::-moz-focus-inner{
+  border: 0;
+}
+
+::-moz-focus-inner{
+  padding: 0;
+}
+
+.gridViewContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -50,19 +101,24 @@ button:hover {
 }
 
 @media screen and (max-width: 800px) {
-  .cardContainer {
-    padding-left: calc((100% - 350px)/2);
+  .gridViewContainer {
+    padding-left: calc((100% - 320px)/2);
   }
 }
 
 @media screen and (min-width: 801px) and (max-width: 1199px) {
-  .cardContainer {
-    padding-left: calc((100% - 720px)/2);
+  .gridViewContainer {
+    padding-left: calc((100% - 660px)/2);
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .cardContainer {
-    padding-left: calc((100% - 1090px)/2);
+  .gridViewContainer {
+    padding-left: calc((100% - 1000px)/2);
   }
+}
+
+.listViewContainer {
+  width: 100%;
+  padding-top: 20px;
 }

@@ -1,62 +1,80 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import styled from 'styled-components';
+import { MdAdd } from 'react-icons/md';
 import {
   doc, onSnapshot, updateDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
-
 import '../App.css';
-
 import Card from '../Card';
 import ReadingMode from '../ReadingMode';
 
-function Container({ children }) {
-  return (
-    <div
-      style={{
-        paddingTop: '100px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-        minHeight: '100vh',
-        background: 'linear-gradient(182.81deg, #757575 7.81%, #1B1B1B 92.91%)',
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+`;
 
-export default function Notes({ userInfo }) {
-  const [newId, setNewId] = useState(1);
-  const [cards, setCards] = useState([]);
-  const [isRead, setIsRead] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [readingCardId, setReadingCardId] = useState(0);
-  const [viewMode, setViewMode] = useState('ListView');
-  const [isChange, setIsChange] = useState(0);
+const WelcomeUserCard = styled.div`
+  width: 320px;
+  height: 120px;
+  margin-top: 20px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 24px;
+  color: #aaaaaa;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+`;
 
-  // const [userInfo, setUserInfo] = useState('');
+const AddNoteCard = styled.div`
+  width: 320px;
+  height: 120px;
+  border-radius: 10px;
+  background: rgb(0,0,0);
+  background: linear-gradient(337deg, rgba(0,0,0,1) 19%, rgba(23,23,23,1) 100%);
+  margin: 20px 0;
+  padding: 15px 0 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  &:hover {
+    background: linear-gradient(337deg, rgba(34,34,34,1) 19%, rgba(51,51,51,1) 100%);
+  }
+  @media screen and (max-width: 900px) {
+    margin: 20px 0 0 0;
+  }
+`;
 
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (userData) => {
-  //     if (userData) {
-  //       // eslint-disable-next-line no-console
-  //       console.log(userData);
-  //       setUserInfo(userData);
-  //     } else {
-  //       // eslint-disable-next-line no-console
-  //       console.log('使用者還沒登入噢');
-  //       setUserInfo(null);
-  //       setCards([]);
-  //     }
-  //   });
-  // }, [auth]);
-
+export default function Notes({
+  userInfo,
+  viewMode,
+  newId,
+  setNewId,
+  cards,
+  setCards,
+  isRead,
+  setIsRead,
+  isCreating,
+  setIsCreating,
+  readingCardId,
+  setReadingCardId,
+  isChange,
+  setIsChange,
+}) {
   useEffect(() => {
     if (userInfo) {
       const ref = doc(db, 'users', userInfo.uid);
@@ -102,12 +120,9 @@ export default function Notes({ userInfo }) {
     />
   ));
 
-  const active = {
-    color: 'red',
-  };
-
   return (
     <Container>
+
       {isRead && (
         <ReadingMode
           cardId={readingCardId}
@@ -119,23 +134,27 @@ export default function Notes({ userInfo }) {
           setIsChange={setIsChange}
         />
       )}
-      <div>{isChange}</div>
-      {userInfo ? userInfo.email : '請登入噢～'}
 
-      <p>{newId}</p>
+      {userInfo ? (
+        <WelcomeUserCard>
+          <i>Hello!</i>
+          <i>{userInfo.email}</i>
+        </WelcomeUserCard>
+      ) : 'Please login first'}
 
-      <button
+      <AddNoteCard
         onClick={() => {
           setCards([{
-            id: newId, isEdit: true, title: '標題', content: '內文', createdTime: null, editedTime: null, color: '#6BD677',
+            id: newId, isEdit: true, title: 'Title', content: 'Type your content here...', createdTime: null, editedTime: null, color: '#6BD677',
           }, ...cards]);
           setNewId((id) => id + 1);
           handleOnRead(newId);
           setIsCreating(true);
         }}
       >
-        新增筆記
-      </button>
+        <MdAdd size={35} color="#F4B510" />
+        <div>Add Note</div>
+      </AddNoteCard>
 
       <div
         style={{
@@ -146,12 +165,8 @@ export default function Notes({ userInfo }) {
           alignItems: 'center',
         }}
       >
-        <div style={{ display: 'flex' }}>
-          <button onClick={() => setViewMode('ListView')} style={viewMode === 'ListView' ? active : null}>List View</button>
-          <button onClick={() => setViewMode('GridView')} style={viewMode === 'GridView' ? active : null}>Grid View</button>
-        </div>
         <div
-          className={viewMode === 'GridView' && 'cardContainer'}
+          className={viewMode === 'GridView' ? 'gridViewContainer' : 'listViewContainer'}
         >
           {userInfo ? cardList : '這裡沒有汁料'}
         </div>

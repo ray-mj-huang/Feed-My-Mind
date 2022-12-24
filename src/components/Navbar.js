@@ -1,86 +1,175 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-
+import { useState } from 'react';
 import styled from 'styled-components';
+import {
+  MdOutlineDarkMode, MdAdd, MdPlayArrow, MdOutlineGridView, MdList,
+} from 'react-icons/md';
+import { GoSignOut } from 'react-icons/go';
 
 const Header = styled.header`
-  background: #CDCDCD;
-  box-shadow: 0px 4px 8px 2px rgb(0 0 0 / 0.2);
+  background: #000000;
+  border-radius: 100px;
   color: #eeeeee;
-  font-size: 18px;
   height: 60px;
-  width: 100%;
-  padding: 0 20px;
+  width: 900px;
+  padding: 0 25px;
   position: fixed;
-  top: 0;
-  left: 0;  
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media screen and (max-width: 900px) {
+    width: 100%;
+    top: 0;
+    border-radius: unset;
+    padding: 0 10px;
+  }
 `;
 
-const NotesButton = styled.button`
+const ToolButtonBox = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-weight: 700;
-`;
-
-const HomeButton = styled.button`
-  font-weight: 700;
-  color: black;
-  background: none;
-  &:hover {background: none; color: #444444;}
-`;
-
-const DashboardButton = styled.button`
-  font-weight: 700;
-  color: black;
-  background: none;
-  &:hover {background: none; color: #444444;}
-`;
-
-const ShortCutButton = styled.button`
-  height: 37px;
-  width: 37px;
-  padding: 0;
-  background: #A8A8A8;
-`;
-
-const ShortCutToolbox = styled.div`
-  width: 130px;
   display: flex;
-  justify-content: space-between;
-  margin-right: 150px;
+  align-items: center;
+  @media screen and (max-width: 900px) {
+    top: 70px;
+    background: black;
+    padding: 6px 30px;
+    border-radius: 30px;
+  }
 `;
 
-export default function Navbar({ changePage, signOut, userInfo }) {
+const Button = styled.button`
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+`;
+
+const ToolButton = styled.button`
+  width: 115px;
+  height: 35px;
+  border-radius: 20px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+  }
+`;
+
+const DisplayModeButton = styled.button`
+  width: 35px;
+  height: 35px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+// const LogOutButton = styled.button`
+//   height: 35px;
+//   padding: 0 16px;
+//   border-radius: 20px;
+//   font-size: 14px;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   color: #cccccc;
+// `;
+
+export default function Navbar({
+  signOut,
+  userInfo,
+  setViewMode,
+  setCards,
+  setNewId,
+  setIsCreating,
+  setIsRead,
+  setReadingCardId,
+  newId,
+  cards,
+}) {
+  const [isOpenTool, setIsOpenTool] = useState(false);
+
   return (
     <Header>
-      <HomeButton
-        style={{ fontWeight: 700 }}
-        onClick={() => changePage('Home')}
+      <div
+        style={{
+          fontWeight: 700,
+          fontSize: 15,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
-        ▲ Feed My Mind
-      </HomeButton>
-
-      <NotesButton onClick={() => changePage('Notes')}>
-        Notes
-      </NotesButton>
-
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <ShortCutToolbox>
-          <ShortCutButton style={{ color: '#1DD79F' }}>▶</ShortCutButton>
-          <ShortCutButton style={{ color: '#F4B510' }}>+</ShortCutButton>
-          <ShortCutButton>☾</ShortCutButton>
-        </ShortCutToolbox>
-        {userInfo ? <button onClick={signOut}>登出</button> : null}
-        <DashboardButton
-          onClick={() => changePage('Dashboard')}
-        >
-          Dashboard
-        </DashboardButton>
+        <img src="logo_temp.png" alt="logo" width="20" style={{ marginRight: 10 }} />
+        <div>Feed My Mind</div>
+        <Button style={{ marginLeft: 10 }}>
+          <MdOutlineDarkMode size={25} color="#888888" />
+        </Button>
       </div>
+
+      {isOpenTool ? (
+        <ToolButtonBox>
+          <DisplayModeButton
+            style={{ borderRadius: '5px 0 0 5px', marginLeft: 3 }}
+            onClick={() => setViewMode('ListView')}
+          >
+            <MdList size={26} color="#888888" />
+          </DisplayModeButton>
+          <DisplayModeButton
+            style={{ borderRadius: '0 5px 5px 0', marginRight: 8 }}
+            onClick={() => setViewMode('GridView')}
+          >
+            <MdOutlineGridView size={23} color="#888888" />
+          </DisplayModeButton>
+          <Button>
+            <MdAdd
+              size={25}
+              color="#F4B510"
+              onClick={() => {
+                setCards([{
+                  id: newId, isEdit: true, title: 'Title', content: 'Type your content here...', createdTime: null, editedTime: null, color: '#6BD677',
+                }, ...cards]);
+                setNewId((id) => id + 1);
+                setIsRead(true);
+                setReadingCardId(newId);
+                setIsCreating(true);
+              }}
+            />
+          </Button>
+          <Button style={{ display: 'none' }}>
+            <MdPlayArrow size={25} color="#1DD79F" />
+          </Button>
+        </ToolButtonBox>
+      ) : null}
+
+      {userInfo ? (
+        <div style={{ display: 'flex' }}>
+          <ToolButton
+            onClick={() => setIsOpenTool(!isOpenTool)}
+          >
+            {isOpenTool ? 'Close Tools' : 'Open Tools'}
+          </ToolButton>
+          <Button
+            onClick={() => {
+              signOut();
+              setIsOpenTool(false);
+            }}
+          >
+            <GoSignOut size={20} style={{ margin: '3px 0px 0px 2px' }} />
+          </Button>
+        </div>
+      ) : null}
     </Header>
   );
 }
