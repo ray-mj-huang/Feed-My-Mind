@@ -1,0 +1,124 @@
+* {
+  box-sizing: border-box;
+  /* border: 0.1px solid #666666; */
+}
+
+body {
+  background: #1e1e1e;
+  color: #eeeeee;
+  font-size: 14px;
+}
+
+img {
+  display: block;
+}
+
+input:-internal-autofill-selected {
+  background: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f4b510 inset !important;
+}
+
+button {
+  display: inline-block;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align: center;
+  cursor: pointer;
+
+  background: #222222;
+  color: #ffffff;
+
+  /* transition: background 250ms ease-in-out, 
+  transform 150ms ease; */  
+}
+
+button:disabled {
+  opacity: 0;
+}
+
+button:hover {
+  background:#444444;
+}
+
+/* button:focus {
+  background: #888888;
+} */
+
+/* button:active {
+  transform: scale(0.99);
+} */
+
+input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+*:focus{
+  border-radius: 0;
+  outline: none;
+}
+
+::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+::-webkit-color-swatch{
+  border: 0;
+  border-radius: 0;
+}
+
+::-moz-color-swatch,
+::-moz-focus-inner{
+  border: 0;
+}
+
+::-moz-focus-inner{
+  padding: 0;
+}
+
+.gridViewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  padding-top: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .gridViewContainer {
+    padding-left: calc((100% - 320px)/2);
+  }
+}
+
+@media screen and (min-width: 801px) and (max-width: 1199px) {
+  .gridViewContainer {
+    padding-left: calc((100% - 660px)/2);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .gridViewContainer {
+    padding-left: calc((100% - 1000px)/2);
+  }
+}
+
+.listViewContainer {
+  width: 100%;
+  padding-top: 20px;
+}
