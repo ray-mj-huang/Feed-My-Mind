@@ -117,8 +117,8 @@ function SignUpBox() {
 }
 
 function LoginBox() {
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
+  const [emailValue, setEmailValue] = useState('test@test.com');
+  const [passwordValue, setPasswordValue] = useState('123456');
 
   function login(email, password) {
     const auth = getAuth();
