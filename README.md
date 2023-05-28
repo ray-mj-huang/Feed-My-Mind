@@ -4,6 +4,12 @@ A note-taking web app developed by React.
 
 ![Mockup](./readme_assets/mockup.png)
 
+## Demo
+
+👉 Live demo：[Feed My Mind](https://feed-my-mind-ray.web.app)
+- account: test@gmail.com
+- password: 123456
+
 ## Features
 
 - Create a new note with text content and color selected.
@@ -13,12 +19,6 @@ A note-taking web app developed by React.
 - Change view mode: list view & grid view.
 - Create your own account to store your own notes.
 - RWD layout.
-
-## Demo
-
-👉 Live demo：[Feed My Mind](https://feed-my-mind-ray.web.app)
-- account: test@gmail.com
-- password: 123456
 
 ## Preview
 
