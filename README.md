@@ -2,6 +2,8 @@
 
 A note-taking web app developed by React.
 
+![Mockup](./readme_assets/mockup.png)
+
 ## Features
 
 - Create a new note with text content and color selected.
