@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import './App.css';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebase';
-import Navbar from './components/Navbar';
 import Notes from './pages/Notes';
+import Navbar from './components/Navbar';
 import SignInCard from './components/SignInCard';
 
 const Container = styled.div`

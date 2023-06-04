@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import '../App.css';
-import Card from '../Card';
+import Card from '../components/Card';
 import ReadingMode from '../ReadingMode';
 
 const Container = styled.div`
