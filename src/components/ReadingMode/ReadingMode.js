@@ -2,100 +2,18 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { MdOutlineEdit, MdClose, MdOutlineDarkMode } from 'react-icons/md';
 import { HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineTrash } from 'react-icons/hi';
-
-const Container = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  // background: #333333ee;
-  // background: #131313;
-  background: #383838;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  @media screen and (max-width: 900px) {
-    justify-content: start;
-    padding-top: 20px;
-  } 
-`;
-
-const ReadingCard = styled.div`
-  width: 350px;
-  height: 500px;
-  padding: 20px;
-  border-radius: 6px;
-  background: #171717;
-  z-index: 1;
-  @media screen and (max-width: 900px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 70%;
-  }
-`;
-
-const CardButton = styled.button`
-  color: #cccccc;
-  font-size: 14px;
-  height: 28px;
-  padding: 0 14px;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ArrowButton = styled.button`
-  color: #cccccc;
-  font-size: 14px;
-  height: 60px;
-  width: 60px;
-  border-radius: 30px;
-  padding: 0 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TimeBox = styled.div`
-  color: #444444;
-  font-size: 12px;
-`;
-
-const AriticleContainer = styled.div`
-  padding: 20px 10px;
-  height: 350px;
-  overflow: scroll;
-  @media screen and (max-width: 900px) {
-    height: 72%;
-  }
-`;
-
-const ChangeNoteBox = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  display: flex;
-  width: 600px;
-  justify-content: space-between;
-  @media screen and (max-width: 900px) {
-    top: unset;
-    bottom: 0;
-    width: 320px;
-  }
-`;
-
-const editStyle = {
-  background: 'black',
-  padding: '5px 10px',
-};
+import {
+  Container,
+  ReadingCard,
+  CardButton,
+  ArrowButton,
+  TimeBox,
+  AriticleContainer,
+  ChangeNoteBox,
+  EditStyle,
+} from './ReadingMode.style';
 
 export default function ReadingMode({
   cardId, cards, setCards, setIsRead, isCreating, setIsCreating, setIsChange,
@@ -125,7 +43,6 @@ export default function ReadingMode({
 
   if (currentIndex < cards.length - 1) {
     nextId = cards[currentIndex + 1].id;
-  // console.log(`nextId: ${nextId}`);
   }
 
   const hasPrev = currentIndex > 0;
@@ -169,10 +86,6 @@ export default function ReadingMode({
           alignItems: 'center',
           justifyContent: 'space-around',
           width: 330,
-          // position: 'absolute',
-          // top: '60px',
-          // left: '50%',
-          // transform: 'translateX(-50%)',
           margin: '0 0 30px 0',
         }}
       >
@@ -364,24 +277,30 @@ export default function ReadingMode({
               </>
             ) : null}
           </div>
-          <h1
-            contentEditable={card.isEdit}
-            onInput={(e) => {
-              setEditingTitle(e.target.innerHTML);
-            }}
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: card.title }}
-            style={card.isEdit ? editStyle : null}
-          />
-          <div
-            contentEditable={card.isEdit}
-            onInput={(e) => {
-              setEditingContent(e.target.innerHTML);
-            }}
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: card.content }}
-            style={card.isEdit ? editStyle : null}
-          />
+          <EditStyle
+            isEdit={card.isEdit}
+          >
+            <h1
+              contentEditable={card.isEdit}
+              onInput={(e) => {
+                setEditingTitle(e.target.innerHTML);
+              }}
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: card.title }}
+            />
+          </EditStyle>
+          <EditStyle
+            isEdit={card.isEdit}
+          >
+            <div
+              contentEditable={card.isEdit}
+              onInput={(e) => {
+                setEditingContent(e.target.innerHTML);
+              }}
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: card.content }}
+            />
+          </EditStyle>
         </AriticleContainer>
         <div
           style={{

@@ -2,28 +2,13 @@
 /* eslint-disable react/prop-types */
 
 import { useState, useEffect } from 'react';
-// import { onAuthStateChanged } from 'firebase/auth';
-// import { auth } from './firebase';
-import styled from 'styled-components';
 import './App.css';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebase';
-import Notes from './pages/Notes';
+import Container from './containers/Container';
+import Notes from './components/Notes';
 import Navbar from './components/Navbar';
 import SignInCard from './components/SignInCard';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  background: #1e1e1e;
-  padding-top: 75px;
-  @media screen and (max-width: 900px) {
-    padding-top: 60px;
-  }
-`;
 
 function App() {
   const [userInfo, setUserInfo] = useState('');
@@ -39,27 +24,20 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (userData) => {
       if (userData) {
-        // eslint-disable-next-line no-console
-        console.log(userData);
         setUserInfo(userData);
       } else {
-        // eslint-disable-next-line no-console
-        console.log('使用者還沒登入噢');
         setUserInfo(null);
-        // setCards([]);
       }
     });
   }, [auth]);
 
   function signOutFunction() {
     signOut(auth).then(() => {
-      // eslint-disable-next-line no-console
-      console.log('已經登出囉！');
       setUserInfo(null);
     })
       .catch((error) => {
-      // eslint-disable-next-line no-console
-        console.log(error);
+        // eslint-disable-next-line no-console
+        console.error(error);
       });
   }
 
