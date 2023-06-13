@@ -7,6 +7,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../firebase';
 import '../../App.css';
+import { useUserInfo } from '../../context/UserInfoContext';
 import Card from '../Card';
 import ReadingMode from '../ReadingMode';
 import {
@@ -16,7 +17,6 @@ import {
 } from './Notes.style';
 
 export default function Notes({
-  userInfo,
   viewMode,
   newId,
   setNewId,
@@ -31,6 +31,8 @@ export default function Notes({
   isChange,
   setIsChange,
 }) {
+  const { userInfo } = useUserInfo();
+
   useEffect(() => {
     if (userInfo) {
       const ref = doc(db, 'users', userInfo.uid);

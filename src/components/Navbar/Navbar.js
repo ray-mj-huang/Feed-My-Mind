@@ -5,6 +5,7 @@ import {
   MdOutlineDarkMode, MdAdd, MdPlayArrow, MdOutlineGridView, MdList,
 } from 'react-icons/md';
 import { GoSignOut } from 'react-icons/go';
+import { useUserInfo } from '../../context/UserInfoContext';
 import {
   Header,
   ToolButtonBox,
@@ -14,8 +15,6 @@ import {
 } from './Navbar.style';
 
 export default function Navbar({
-  signOut,
-  userInfo,
   setViewMode,
   setCards,
   setNewId,
@@ -26,6 +25,7 @@ export default function Navbar({
   cards,
 }) {
   const [isOpenTool, setIsOpenTool] = useState(false);
+  const { userInfo, handleSignOut } = useUserInfo();
 
   return (
     <Header>
@@ -89,7 +89,7 @@ export default function Navbar({
           </ToolButton>
           <Button
             onClick={() => {
-              signOut();
+              handleSignOut();
               setIsOpenTool(false);
             }}
           >

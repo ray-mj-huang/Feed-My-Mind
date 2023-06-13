@@ -1,19 +1,18 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase';
+import { useUserInfo } from './context/UserInfoContext';
 import Container from './containers/Container';
 import Notes from './components/Notes';
 import Navbar from './components/Navbar';
 import SignInCard from './components/SignInCard';
 
 function App() {
-  const [userInfo, setUserInfo] = useState('');
-  const [viewMode, setViewMode] = useState('GridView');
+  const { userInfo } = useUserInfo();
 
+  const [viewMode, setViewMode] = useState('GridView');
   const [newId, setNewId] = useState(1);
   const [cards, setCards] = useState([]);
   const [isRead, setIsRead] = useState(false);
@@ -21,31 +20,9 @@ function App() {
   const [readingCardId, setReadingCardId] = useState(0);
   const [isChange, setIsChange] = useState(0);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (userData) => {
-      if (userData) {
-        setUserInfo(userData);
-      } else {
-        setUserInfo(null);
-      }
-    });
-  }, [auth]);
-
-  function signOutFunction() {
-    signOut(auth).then(() => {
-      setUserInfo(null);
-    })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      });
-  }
-
   return (
     <Container>
       <Navbar
-        signOut={() => signOutFunction()}
-        userInfo={userInfo}
         setViewMode={setViewMode}
         setCards={setCards}
         setNewId={setNewId}
@@ -57,7 +34,6 @@ function App() {
       />
       {userInfo ? (
         <Notes
-          userInfo={userInfo}
           viewMode={viewMode}
           newId={newId}
           setNewId={setNewId}

@@ -22,8 +22,8 @@ function SignUpBox() {
       .then((userCredential) => {
         const { user } = userCredential;
         const userData = auth.currentUser;
-        // eslint-disable-next-line no-console
-        console.log(user);
+        // eslint-disable-next-line no-alert
+        alert(`Hi! ${user.email}`);
         const createNewUserData = doc(db, 'users', userData.uid);
         setDoc(createNewUserData, ({
           ...newUser,
@@ -105,8 +105,8 @@ function LoginBox() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        // eslint-disable-next-line no-console
-        console.log(user);
+        // eslint-disable-next-line no-alert
+        alert(`Hi! ${user.email}`);
       })
       .catch((error) => {
         const errorCode = error.code;
